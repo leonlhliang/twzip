@@ -44,7 +44,7 @@ ofile.close()
 
 
 ifile = open("tmp/result.json", "r")
-ofile = open("tmp/result.js", "w")
+ofile = open("lib/rule.js", "w")
 
 for line in ifile:
     line = line.replace('": "function', '": function')
