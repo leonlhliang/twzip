@@ -19,7 +19,6 @@ ifile = codecs.open("tmp/weighted.json", "r", encoding="utf-8")
 rules = json.loads(ifile.read())
 ifile.close()
 
-
 for c in rules:
     for d in rules[c]:
         for s in rules[c][d]:
@@ -31,7 +30,6 @@ for c in rules:
                 js += js_body % (condition, zipcode)
             js += js_tail
             rules[c][d][s] = js
-
 
 ofile = codecs.open("tmp/result.json", "w", encoding="utf-8")
 json.dump(rules, ofile, indent=4, ensure_ascii=False)

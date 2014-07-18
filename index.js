@@ -4,12 +4,12 @@ var rule = require("./lib/rule");
 var parse = function (numbers) {
     "use strict";
     return {
-        number: 0,
-        alley: 0,
-        floor: 0,
-        index: 0,
-        lane: 0,
-        dash: 0
+        idx: 0,
+        aly: 0,
+        flr: 0,
+        ext: 0,
+        ln: 0,
+        no: 0
     };
 };
 
