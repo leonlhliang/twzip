@@ -1,8 +1,8 @@
 {
-  "author": "Leon Li-Heng Liang",
-  "name": "twzip",
   "description": "Get 3+2 zipcode from Taiwanese address",
-  "version": "0.1.3",
   "repository": "https://github.com/leonlhliang/twzip.git",
-  "main": "index.js"
+  "version": "0.1.3",
+  "author": "Leon Li-Heng Liang",
+  "main": "index.js",
+  "name": "twzip"
 }

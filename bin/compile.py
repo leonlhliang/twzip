@@ -40,13 +40,18 @@ ifile = open("tmp/result.json", "r")
 ofile = open("lib/rule.js", "w")
 
 for index, line in enumerate(ifile):
+    line = line.replace('": "function', '": function')
+    line = line.replace(';}"', ';}')
+
     if index == 0:
         ofile.write("module.exports = {\n")
     elif line == "}":
         ofile.write("};\n")
+    elif "if (true) " in line:
+        line = line.replace("if (true) ", "")
+        line = line.replace("return '00000';", "")
+        ofile.write(line)
     else:
-        line = line.replace('": "function', '": function')
-        line = line.replace(';}"', ';}')
         ofile.write(line)
 
 ofile.close()
