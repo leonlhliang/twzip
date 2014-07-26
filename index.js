@@ -1,4 +1,4 @@
-var rule = require("./lib/rule");
+var rule = require("./lib");
 
 
 var parse = function (numbers) {

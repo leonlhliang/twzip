@@ -10,9 +10,9 @@ def translate(cond):
     return "false"
 
 
-js_head = "function (n) {"
-js_body = "if (%s) return '%s';"
-js_tail = "return '00000';}"
+js_head = "function(n){"
+js_body = "if(%s)return'%s';"
+js_tail = "return'00000';}"
 
 
 ifile = codecs.open("tmp/weighted.json", "r", encoding="utf-8")
@@ -37,19 +37,22 @@ ofile.close()
 
 
 ifile = open("tmp/result.json", "r")
-ofile = open("lib/rule.js", "w")
+ofile = open("lib.js", "w")
 
 for index, line in enumerate(ifile):
-    line = line.replace('": "function', '": function')
+    line = line.replace('": "function', '":function')
     line = line.replace(';}"', ';}')
+    line = line.replace('            ', '')
+    line = line.replace('        ', '')
+    line = line.replace('    ', '')
 
     if index == 0:
         ofile.write("module.exports = {\n")
     elif line == "}":
         ofile.write("};\n")
-    elif "if (true) " in line:
-        line = line.replace("if (true) ", "")
-        line = line.replace("return '00000';", "")
+    elif "if(true)" in line:
+        line = line.replace("if(true)", "")
+        line = line.replace("return'00000';", "")
         ofile.write(line)
     else:
         ofile.write(line)
