@@ -1,4 +1,5 @@
-dizu
+Dizu Frontend RESTAPI
 =====
 
-Query Taiwanese Address
+Input:  Address in Chinese  
+Output: 3+2 digits zipcode
