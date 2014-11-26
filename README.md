@@ -1,4 +1,4 @@
-Dizu Frontend RESTAPI
+Dizu RESTAPI
 =====
 
 Input:  Address in Chinese  
