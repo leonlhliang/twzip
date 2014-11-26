@@ -1,12 +1,18 @@
 var express = require("express");
-var morgan  = require("morgan");
+
 
 var server = express();
 
-server.use(morgan("combined"));
+server.use(require("morgan")("combined"));
 
-server.get("/v1/zip", function (req, res) {
+
+server.route("/v1/cities").get(function (req, res) {
     res.send(req.query);
 });
+
+server.route("/v1/zip").get(function (req, res) {
+    res.send(req.query);
+});
+
 
 server.listen(3000);
