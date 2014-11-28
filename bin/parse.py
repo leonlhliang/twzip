@@ -1,18 +1,32 @@
 #!/usr/bin/env python
 # -*- encoding: utf8 -*-
+import json
 
-zip_digits = 5
-city_chars = 3
+
+result = {}
+
+index = {
+    "area": 5 + 3 * 3 + 3 * 3,
+    "city": 5 + 3 * 3,
+    "code": 5
+}
 
 for line in open("ORIGIN.txt"):
-    zipcode = line[:zip_digits]
-    city = line[zip_digits: zip_digits + (city_chars*3)]
-    district = line[zip_digits + (city_chars*3): line.find(" ")]
+    code = line[:index["code"]]
+
+    city = line[index["code"]: index["city"]]
+    if not city in result: result[city] = {}
+
+    area = line[index["city"]: index["area"]]
+    if not area in result[city]: result[city][area] = {}
 
     line = line[line.find(" "):].strip()
 
-    street = line[:line.find(" ")]
+    road = line[:line.find(" ")]
     condition = line[line.find(" "):].replace("　", "").strip()
 
-    print condition
 
+json.dump(result, open("zipcode.json", "w"),
+    ensure_ascii=False,
+    indent=4
+)
