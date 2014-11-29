@@ -1,13 +1,29 @@
+var runexec = require("bluebird").promisify(require("child_process").exec);
+var expect  = require("chai").expect;
+var path    = require("path");
+
+
 module.exports = function () {
-    this.Given(/^The server is running$/, function (next) {
-        next.pending();
+
+    this.Given(/^the official data as "([^"]*)"$/, function (filename, next) {
+        expect(filename).to.equal("ORIGIN.txt");
+        return next();
     });
 
-    this.When(/^Send request to "([^"]*)"$/, function (url, next) {
-        next.pending();
+    this.When(/^execute the command "([^"]*)"$/, function (cmd, next) {
+        return runexec(cmd).spread(function (stdout, stderr) {
+            expect(stdout).to.equal("");
+            expect(stderr).to.equal("");
+            return next();
+        }).catch(function (err) {
+            return next.fail(err);
+        });
     });
 
-    this.Then(/^Got response status code "([^"]*)"$/, function (status, next) {
-        next.pending();
+    this.Then(/^have a valid JSON named "([^"]*)"$/, function (filename, next) {
+        var filepath = path.join(process.cwd(), filename);
+        expect(require(filepath)).to.be.an("object");
+        return next();
     });
+
 };

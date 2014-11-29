@@ -1,23 +1,24 @@
 #!/usr/bin/env python
 # -*- encoding: utf8 -*-
 import json
+import sys
 
 
 result = {}
 
-index = {
-    "area": 5 + 3 * 3 + 3 * 3,
-    "city": 5 + 3 * 3,
-    "code": 5
+INDEX = {
+    "AREA": 5 + 3 * 3 + 3 * 3,
+    "CITY": 5 + 3 * 3,
+    "CODE": 5
 }
 
 for line in open("ORIGIN.txt"):
-    code = line[:index["code"]]
+    code = line[:INDEX["CODE"]]
 
-    city = line[index["code"]: index["city"]]
+    city = line[INDEX["CODE"]: INDEX["CITY"]]
     if not city in result: result[city] = {}
 
-    area = line[index["city"]: index["area"]]
+    area = line[INDEX["CITY"]: INDEX["AREA"]]
     if not area in result[city]: result[city][area] = {}
 
     line = line[line.find(" "):].strip()
@@ -30,3 +31,5 @@ json.dump(result, open("zipcode.json", "w"),
     ensure_ascii=False,
     indent=4
 )
+
+sys.exit(0)
