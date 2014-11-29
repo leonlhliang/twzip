@@ -1,11 +1,27 @@
 {
+    "devDependencies": {
+        "chai-as-promised": "4.1.1",
+        "precommit-hook": "latest",
+        "cucumber-junit": "1.1.9",
+        "expect.js": "0.3.1",
+        "cucumber": "0.4.4",
+        "chai": "1.10.0"
+    },
     "dependencies": {
         "express": "4.10.4",
         "morgan": "1.5.0"
     },
     "description": "Provides 5-digit zipcode for Taiwanese address",
     "repository": "https://github.com/lihengl/dizu-api.git",
+    "precommit": [
+        "test"
+    ],
     "version": "0.1.0",
+    "scripts": {
+        "test-unit": "cucumber-js test --require test/step --format json | cucumber-junit > test/report.xml",
+        "test": "cucumber-js test --require test/step --format pretty",
+        "lint": "grunt jslint"
+    },
     "author": "lihengl",
     "main": "server.js",
     "name": "dizu-api"
