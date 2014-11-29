@@ -12,7 +12,7 @@
         "express": "4.10.4",
         "morgan": "1.5.0"
     },
-    "description": "Provides 5-digit zipcode for Taiwanese address",
+    "description": "Get 5-digit zipcode for Taiwanese address",
     "repository": "https://github.com/lihengl/dizu-api.git",
     "precommit": [
         "test"
