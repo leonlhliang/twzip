@@ -18,12 +18,17 @@ for line in open("ORIGIN.txt"):
     city = line[INDEX["CODE"]: INDEX["CITY"]]
     if not city in result: result[city] = {}
 
-    area = line[INDEX["CITY"]: INDEX["AREA"]]
+    area_index = INDEX["AREA"]
+    if line[INDEX["AREA"]] != " ": area_index += 3
+    area = line[INDEX["CITY"]: area_index].strip()
     if not area in result[city]: result[city][area] = {}
 
-    line = line[line.find(" "):].strip()
+    line = line[area_index:].strip()
 
-    road = line[:line.find(" ")]
+    road = line.split(" ")[0]
+    if len(line.split(" ")) == 1: road = line[:-3]
+    if not road in result[city][area]: result[city][area][road] = {}
+
     condition = line[line.find(" "):].replace("　", "").strip()
 
 
