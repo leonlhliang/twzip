@@ -11,9 +11,7 @@ module.exports = function () {
     });
 
     this.When(/^execute the command "([^"]*)"$/, function (cmd, next) {
-        return runexec(cmd).spread(function (stdout, stderr) {
-            expect(stdout).to.equal("");
-            expect(stderr).to.equal("");
+        return runexec(cmd).spread(function () {
             return next();
         }).catch(function (err) {
             return next.fail(err);
