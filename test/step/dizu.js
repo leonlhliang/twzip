@@ -12,7 +12,10 @@ module.exports = function () {
 
     this.When(/^execute the command "([^"]*)"$/, function (cmd, next) {
         return runexec(cmd).spread(function (stdout, stderr) {
-            expect(stdout).to.equal("");
+            stdout.split("\n").forEach(function (message) {
+                if (message === "") { return; }
+                expect(message).to.match(/^Duplicant: /);
+            });
             expect(stderr).to.equal("");
             return next();
         }).catch(function (err) {

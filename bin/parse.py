@@ -28,9 +28,11 @@ for line in open("ORIGIN.txt"):
     road = line.split(" ")[0]
     if len(line.split(" ")) == 1: road = line[:-3]
 
+    spec = line.replace(road, "").replace("　", "").replace(" ", "")
+
     road = road.replace("１", "一")
     road = road.replace("２", "二")
-    road = road.replace("４", "四")
+    road = road.replace("３", "三")
     road = road.replace("４", "四")
     road = road.replace("５", "五")
     road = road.replace("６", "六")
@@ -39,8 +41,10 @@ for line in open("ORIGIN.txt"):
     road = road.replace("９", "九")
 
     if not road in result[city][area]: result[city][area][road] = {}
+    if spec in result[city][area][road]:
+        print "Duplicant: %s.%s.%s.%s" % (city, area, road, spec)
 
-    condition = line[line.find(" "):].replace("　", "").strip()
+    result[city][area][road][spec] = code
 
 
 json.dump(result, open("zipcode.json", "w"),
