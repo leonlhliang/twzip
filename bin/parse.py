@@ -27,6 +27,17 @@ for line in open("ORIGIN.txt"):
 
     road = line.split(" ")[0]
     if len(line.split(" ")) == 1: road = line[:-3]
+
+    road = road.replace("１", "一")
+    road = road.replace("２", "二")
+    road = road.replace("４", "四")
+    road = road.replace("４", "四")
+    road = road.replace("５", "五")
+    road = road.replace("６", "六")
+    road = road.replace("７", "七")
+    road = road.replace("８", "八")
+    road = road.replace("９", "九")
+
     if not road in result[city][area]: result[city][area][road] = {}
 
     condition = line[line.find(" "):].replace("　", "").strip()
