@@ -13,15 +13,9 @@ INDEX = {
 result = {}
 
 for line in open("ORIGIN.txt"):
-    line = line.replace("１", "一")
-    line = line.replace("２", "二")
-    line = line.replace("３", "三")
-    line = line.replace("４", "四")
-    line = line.replace("５", "五")
-    line = line.replace("６", "六")
-    line = line.replace("７", "七")
-    line = line.replace("８", "八")
-    line = line.replace("９", "九")
+    line = line.replace("１", "一").replace("２", "二").replace("３", "三")
+    line = line.replace("４", "四").replace("５", "五").replace("６", "六")
+    line = line.replace("７", "七").replace("８", "八").replace("９", "九")
 
     code = line[:INDEX["CODE"]]
     city = line[INDEX["CODE"]: INDEX["CITY"]]
@@ -39,8 +33,23 @@ for line in open("ORIGIN.txt"):
 
     spec = line.replace(road, "").replace("　", "").replace(" ", "")
 
+    weight = 0
+
+    if "全" in spec: weight += (pow(10, 6) + 0)
+    if "巷" in spec: weight += (pow(10, 5) + 4)
+    if "弄" in spec: weight += (pow(10, 5) + 3)
+    if "號" in spec: weight += (pow(10, 5) + 2)
+    if "之" in spec: weight += (pow(10, 5) + 1)
+    if "樓" in spec: weight += (pow(10, 5) + 0)
+    if "上" in spec: weight -= (pow(10, 4) + 1)
+    if "下" in spec: weight -= (pow(10, 4) + 0)
+    if "至" in spec: weight -= (pow(10, 3) + 0)
+    if "雙" in spec: weight -= (pow(10, 2) + 5)
+    if "單" in spec: weight -= (pow(10, 2) + 0)
+    if "連" in spec: weight -= (pow(10, 1) + 0)
+
     if not road in result[city][area]: result[city][area][road] = []
-    result[city][area][road].append("%s:%s" % (code, spec))
+    result[city][area][road].append("%s:%s:%s" % (code, spec, weight))
 
 
 json.dump(result, open("zipcode.json", "w"),
