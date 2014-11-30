@@ -40,11 +40,8 @@ for line in open("ORIGIN.txt"):
     road = road.replace("８", "八")
     road = road.replace("９", "九")
 
-    if not road in result[city][area]: result[city][area][road] = {}
-    if spec in result[city][area][road]:
-        print "Duplicant: %s.%s.%s.%s" % (city, area, road, spec)
-
-    result[city][area][road][spec] = code
+    if not road in result[city][area]: result[city][area][road] = []
+    result[city][area][road].append("%s:%s" % (code, spec))
 
 
 json.dump(result, open("zipcode.json", "w"),
