@@ -2,7 +2,10 @@
 # -*- encoding: utf8 -*-
 import json
 import sys
+import os
 
+
+SCRIPT, ZIPCODE = sys.argv
 
 INDEX = {
     "AREA": 5 + 3 * 3 + 3 * 3,
@@ -12,7 +15,7 @@ INDEX = {
 
 raw = {}
 
-for line in open("ORIGIN.txt"):
+for line in open(ZIPCODE):
     line = line.replace("１", "一").replace("２", "二").replace("３", "三")
     line = line.replace("４", "四").replace("５", "五").replace("６", "六")
     line = line.replace("７", "七").replace("８", "八").replace("９", "九")
@@ -61,7 +64,9 @@ for reg in raw:
         result[city][area][road].append(spec)
 
 
-json.dump(result, open("zipcode.json", "w"),
+if not os.path.exists("lib"): os.makedirs("lib")
+
+json.dump(result, open("lib/zipcode.json", "w"),
     ensure_ascii=False,
     indent=4
 )
