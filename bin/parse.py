@@ -51,13 +51,14 @@ for line in open("ORIGIN.txt"):
 result = {}
 
 for reg in raw:
-    specs = list(reversed(sorted(raw[reg], key=lambda tup: tup[2])))
+    conditions = list(reversed(sorted(raw[reg], key=lambda tup: tup[2])))
     city, area, road = reg[0], reg[1], reg[2]
     if not city in result: result[city] = {}
     if not area in result[city]: result[city][area] = {}
     result[city][area][road] = []
-    for spec in specs:
-        result[city][area][road].append("%s:%s" % (spec[0], spec[1]))
+    for condition in conditions:
+        spec = "%s:%s" % (condition[0], condition[1])
+        result[city][area][road].append(spec)
 
 
 json.dump(result, open("zipcode.json", "w"),
