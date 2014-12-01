@@ -10,7 +10,7 @@ INDEX = {
     "CODE": 5
 }
 
-result = {}
+raw = {}
 
 for line in open("ORIGIN.txt"):
     line = line.replace("１", "一").replace("２", "二").replace("３", "三")
@@ -19,18 +19,13 @@ for line in open("ORIGIN.txt"):
 
     code = line[:INDEX["CODE"]]
     city = line[INDEX["CODE"]: INDEX["CITY"]]
-    if not city in result: result[city] = {}
 
-    area_index = INDEX["AREA"]
-    if line[INDEX["AREA"]] != " ": area_index += 3
+    area_index = 0 if line[INDEX["AREA"]] == " " else 3
+    area_index += INDEX["AREA"]
     area = line[INDEX["CITY"]: area_index].strip()
-    if not area in result[city]: result[city][area] = {}
 
     line = line[area_index:].strip()
-
-    road = line.split(" ")[0]
-    if len(line.split(" ")) == 1: road = line[:-3]
-
+    road = line[:-3] if len(line.split(" ")) == 1 else line.split(" ")[0]
     spec = line.replace(road, "").replace("　", "").replace(" ", "")
 
     weight = 0
@@ -48,8 +43,21 @@ for line in open("ORIGIN.txt"):
     if "單" in spec: weight -= (pow(10, 2) - pow(2, 0))
     if "連" in spec: weight -= (pow(10, 1) - pow(2, 0))
 
-    if not road in result[city][area]: result[city][area][road] = []
-    result[city][area][road].append("%s:%s:%s" % (code, spec, weight))
+    key = (city, area, road)
+    if not key in raw: raw[key] = []
+    raw[key].append((code, spec, weight))
+
+
+result = {}
+
+for reg in raw:
+    specs = list(reversed(sorted(raw[reg], key=lambda tup: tup[2])))
+    city, area, road = reg[0], reg[1], reg[2]
+    if not city in result: result[city] = {}
+    if not area in result[city]: result[city][area] = {}
+    result[city][area][road] = []
+    for spec in specs:
+        result[city][area][road].append("%s:%s" % (spec[0], spec[1]))
 
 
 json.dump(result, open("zipcode.json", "w"),
