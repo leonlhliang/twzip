@@ -35,18 +35,18 @@ for line in open("ORIGIN.txt"):
 
     weight = 0
 
-    if "全" in spec: weight += (pow(10, 6) + 0)
-    if "巷" in spec: weight += (pow(10, 5) + 4)
-    if "弄" in spec: weight += (pow(10, 5) + 3)
-    if "號" in spec: weight += (pow(10, 5) + 2)
-    if "之" in spec: weight += (pow(10, 5) + 1)
-    if "樓" in spec: weight += (pow(10, 5) + 0)
-    if "上" in spec: weight -= (pow(10, 4) + 1)
-    if "下" in spec: weight -= (pow(10, 4) + 0)
-    if "至" in spec: weight -= (pow(10, 3) + 0)
-    if "雙" in spec: weight -= (pow(10, 2) + 5)
-    if "單" in spec: weight -= (pow(10, 2) + 0)
-    if "連" in spec: weight -= (pow(10, 1) + 0)
+    if "全" in spec: weight += (pow(10, 6) + pow(2, 0))
+    if "巷" in spec: weight += (pow(10, 5) + pow(2, 4))
+    if "弄" in spec: weight += (pow(10, 5) + pow(2, 3))
+    if "號" in spec: weight += (pow(10, 5) + pow(2, 2))
+    if "之" in spec: weight += (pow(10, 5) + pow(2, 1))
+    if "樓" in spec: weight += (pow(10, 5) + pow(2, 0))
+    if "上" in spec: weight -= (pow(10, 4) + pow(2, 1))
+    if "下" in spec: weight -= (pow(10, 4) + pow(2, 0))
+    if "至" in spec: weight -= (pow(10, 3) + pow(2, 0))
+    if "雙" in spec: weight -= (pow(10, 2) + pow(2, 5))
+    if "單" in spec: weight -= (pow(10, 2) + pow(2, 0))
+    if "連" in spec: weight -= (pow(10, 1) + pow(2, 0))
 
     if not road in result[city][area]: result[city][area][road] = []
     result[city][area][road].append("%s:%s:%s" % (code, spec, weight))
