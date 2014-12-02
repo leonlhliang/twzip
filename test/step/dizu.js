@@ -1,7 +1,8 @@
 var runexec = require("bluebird").promisify(require("child_process").exec);
+var fsrdir  = require("bluebird").promisify(require("fs").readdir);
+var fsopen  = require("bluebird").promisify(require("fs").open);
 var expect  = require("chai").expect;
 var path    = require("path");
-var fsopen  = require("bluebird").promisify(require("fs").open);
 
 
 module.exports = function () {
@@ -46,6 +47,19 @@ module.exports = function () {
         });
 
         return next();
+    });
+
+    this.Then(/^folder "([^"]*)" holds folders:$/, function (dir, table, next) {
+        return fsrdir(path.join(process.cwd(), dir)).then(function (dirs) {
+            table.raw().forEach(function (row) {
+                row.forEach(function (col) {
+                    expect(dirs).to.include(col);
+                });
+            });
+            return next();
+        }).catch(function (err) {
+            return next.fail(err);
+        });
     });
 
 };

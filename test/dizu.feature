@@ -13,4 +13,11 @@ Feature: Reference Official Postal Data
             | nantou  | 南投縣 | Nantou County   |
             | yilan   | 宜蘭縣 | Yilan County    |
             | hualien | 花蓮縣 | Hualien County  |
-
+          And folder "lib" holds folders:
+            | kinmen    | penghu   | taitung    |
+            | taichung  | taoyuan  | keelung    |
+            | hualien   | hsinchu  | tainan     |
+            | chiayi    | nanhai   | lienchiang |
+            | kaohsiung | yilan    | miaoli     |
+            | yunlin    | hsinpei  | taipei     |
+            | changhua  | pingtung | nantou     |

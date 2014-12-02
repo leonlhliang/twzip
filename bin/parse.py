@@ -92,7 +92,10 @@ for line in open(os.path.join(SRCDIR, "name.csv")):
     name_city = (zh_tw_city, en_us_city)
     name_area = (zh_tw_area, en_us_area)
 
-    if not id_city in result: result[id_city] = {"name": name_city, "area": {}}
+    if not id_city in result:
+        result[id_city] = {"name": name_city, "area": {}}
+        os.makedirs(os.path.join(DESTDIR, id_city))
+
     if not id_area in result[id_city]["area"]:
         result[id_city]["area"][id_area] = name_area
 
