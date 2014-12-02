@@ -27,9 +27,24 @@ module.exports = function () {
         });
     });
 
-    this.Then(/^have a valid JSON at "([^"]*)"$/, function (filename, next) {
-        var filepath = path.join(process.cwd(), filename);
+    this.Then(/^have a valid JSON at "([^"]*)"$/, function (file, next) {
+        var filepath = path.join(process.cwd(), file);
         expect(require(filepath)).to.be.an("object");
+        return next();
+    });
+
+    this.Then(/^file "([^"]*)" contains sample:$/, function (file, table, next) {
+        var filepath = path.join(process.cwd(), file), name = null;
+
+        expect(require(filepath)).to.be.an("object");
+        name = require(filepath);
+
+        table.raw().forEach(function (row) {
+            expect(name).to.have.property(row[0]);
+            expect(name[row[0]]["name"][0]).to.equal(row[1]);
+            expect(name[row[0]]["name"][1]).to.equal(row[2]);
+        });
+
         return next();
     });
 

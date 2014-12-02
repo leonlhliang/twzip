@@ -5,7 +5,7 @@ import sys
 import os
 
 
-SCRIPT, ZIPCODE = sys.argv
+SCRIPT, SRCDIR, DESTDIR = sys.argv
 
 INDEX = {
     "AREA": 5 + 3 * 3 + 3 * 3,
@@ -15,7 +15,7 @@ INDEX = {
 
 raw = {}
 
-for line in open(ZIPCODE):
+for line in open(os.path.join(SRCDIR, "code.txt")):
     line = line.replace("１", "一").replace("２", "二").replace("３", "三")
     line = line.replace("４", "四").replace("５", "五").replace("６", "六")
     line = line.replace("７", "七").replace("８", "八").replace("９", "九")
@@ -64,11 +64,43 @@ for reg in raw:
         result[city][area][road].append(spec)
 
 
-if not os.path.exists("lib"): os.makedirs("lib")
+if not os.path.exists(DESTDIR): os.makedirs(DESTDIR)
 
-json.dump(result, open("lib/zipcode.json", "w"),
+json.dump(result, open(os.path.join(DESTDIR, "code.json"), "w"),
     ensure_ascii=False,
     indent=4
 )
+
+
+result = {}
+
+for line in open(os.path.join(SRCDIR, "name.csv")):
+    vals = line.strip().split(",")
+
+    if vals[1] == "釣魚台": continue
+
+    zh_tw_city = vals[1][:9]
+    zh_tw_area = vals[1][9:]
+    en_us_area = vals[2].replace('"', '').replace("Dist.", "District")
+    en_us_city = vals[3].strip().replace('"', '')
+
+    id_city = en_us_city.split(" ")[0].lower()
+    id_area = en_us_area.split(" ")[0].lower()
+
+    if id_city == "new": id_city = "hsinpei"
+
+    name_city = (zh_tw_city, en_us_city)
+    name_area = (zh_tw_area, en_us_area)
+
+    if not id_city in result: result[id_city] = {"name": name_city, "area": {}}
+    if not id_area in result[id_city]["area"]:
+        result[id_city]["area"][id_area] = name_area
+
+
+json.dump(result, open(os.path.join(DESTDIR, "name.json"), "w"),
+    ensure_ascii=False,
+    indent=4
+)
+
 
 sys.exit(0)
