@@ -6,19 +6,19 @@ Feature: Reference Official Postal Data
             | doc/code.txt |
          When execute the command "npm run compile doc lib"
          Then have a valid JSON at "lib/code.json"
-          And file "lib/name.json" contains sample:
-            | taipei  | 臺北市 | Taipei City     |
-            | hsinpei | 新北市 | New Taipei City |
-            | tainan  | 臺南市 | Tainan City     |
-            | nantou  | 南投縣 | Nantou County   |
-            | yilan   | 宜蘭縣 | Yilan County    |
-            | hualien | 花蓮縣 | Hualien County  |
+          And file "lib/name.json" holds sample:
+            | taipeicity    | 臺北市 | Taipei City     |
+            | newtaipeicity | 新北市 | New Taipei City |
+            | tainancity    | 臺南市 | Tainan City     |
+            | nantoucounty  | 南投縣 | Nantou County   |
+            | yilancounty   | 宜蘭縣 | Yilan County    |
+            | hualiencounty | 花蓮縣 | Hualien County  |
           And folder "lib" holds folders:
-            | kinmen    | penghu   | taitung    |
-            | taichung  | taoyuan  | keelung    |
-            | hualien   | hsinchu  | tainan     |
-            | chiayi    | nanhai   | lienchiang |
-            | kaohsiung | yilan    | miaoli     |
-            | yunlin    | hsinpei  | taipei     |
-            | changhua  | pingtung | nantou     |
-          And city folders have one js per district
+            | kinmencounty   | penghucounty   | taitungcounty    |
+            | taichungcity   | taoyuancounty  | keelungcity      |
+            | hualiencounty  | hsinchucity    | tainancity       |
+            | chiayicity     | chiayicounty   | lienchiangcounty |
+            | kaohsiungcity  | yilancounty    | miaolicounty     |
+            | yunlincounty   | newtaipeicity  | taipeicity       |
+            | changhuacounty | pingtungcounty | nantoucounty     |
+          And each area in "lib/name.json" be one js file

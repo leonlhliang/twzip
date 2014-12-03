@@ -1,6 +1,7 @@
-var runexec = require("bluebird").promisify(require("child_process").exec);
-var fsrdir  = require("bluebird").promisify(require("fs").readdir);
-var fsopen  = require("bluebird").promisify(require("fs").open);
+var promise = require("bluebird");
+var runexec = promise.promisify(require("child_process").exec);
+var fsrdir  = promise.promisify(require("fs").readdir);
+var fsopen  = promise.promisify(require("fs").open);
 var expect  = require("chai").expect;
 var path    = require("path");
 
@@ -11,7 +12,7 @@ module.exports = function () {
         expect(table.raw().length).to.equal(2);
         expect(table.raw().filter(function (row) {
             var filepath = path.join(process.cwd(), row[0]);
-            return fsopen(filepath, "r").spread(function () {
+            return fsopen(filepath, "r").then(function () {
                 return true;
             }).catch(function () {
                 return false;
@@ -21,7 +22,7 @@ module.exports = function () {
     });
 
     this.When(/^execute the command "([^"]*)"$/, function (cmd, next) {
-        return runexec(cmd).spread(function () {
+        return runexec(cmd).then(function () {
             return next();
         }).catch(function (err) {
             return next.fail(err);
@@ -34,7 +35,7 @@ module.exports = function () {
         return next();
     });
 
-    this.Then(/^file "([^"]*)" contains sample:$/, function (file, table, next) {
+    this.Then(/^file "([^"]*)" holds sample:$/, function (file, table, next) {
         var filepath = path.join(process.cwd(), file), name = null;
 
         expect(require(filepath)).to.be.an("object");
@@ -62,8 +63,21 @@ module.exports = function () {
         });
     });
 
-    this.Then(/^city folders have one js per district$/, function (next) {
-        return next.pending();
+    this.Then(/^each area in "([^"]*)" be one js file$/, function (file, next) {
+        var filepath = path.join(process.cwd(), file), areas = [], map = {};
+
+        expect(require(filepath)).to.be.an("object");
+        map = require(filepath);
+
+        for (var city in map) {for (var area in map[city].area) {
+            areas.push(fsopen(path.join("lib", city, (area + ".js")), "r"));
+        }}
+
+        return promise.all(areas).then(function () {
+            return next();
+        }).catch(function (err) {
+            return next.fail(err);
+        });
     });
 
 };

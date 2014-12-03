@@ -6,7 +6,7 @@ import sys
 import os
 
 
-SCRIPT, SRCDIR, DESTDIR = sys.argv
+SCRIPT, SRCDIR, OUTDIR = sys.argv
 
 INDEX = {
     "AREA": 5 + 3 * 3 + 3 * 3,
@@ -52,29 +52,29 @@ for line in open(os.path.join(SRCDIR, "code.txt")):
     raw[key].append((code, spec, weight))
 
 
-result = {}
+code = {}
 
 for reg in raw:
     conditions = list(reversed(sorted(raw[reg], key=lambda tup: tup[2])))
     city, area, road = reg[0], reg[1], reg[2]
-    if not city in result: result[city] = {}
-    if not area in result[city]: result[city][area] = {}
-    result[city][area][road] = []
+    if not city in code: code[city] = {}
+    if not area in code[city]: code[city][area] = {}
+    code[city][area][road] = []
     for condition in conditions:
         spec = "%s:%s" % (condition[0], condition[1])
-        result[city][area][road].append(spec)
+        code[city][area][road].append(spec)
 
 
-if os.path.exists(DESTDIR): shutil.rmtree(DESTDIR)
-os.makedirs(DESTDIR)
+if os.path.exists(OUTDIR): shutil.rmtree(OUTDIR)
+os.makedirs(OUTDIR)
 
-json.dump(result, open(os.path.join(DESTDIR, "code.json"), "w"),
+json.dump(code, open(os.path.join(OUTDIR, "code.json"), "w"),
     ensure_ascii=False,
     indent=4
 )
 
 
-result = {}
+name = {}
 
 for line in open(os.path.join(SRCDIR, "name.csv")):
     vals = line.strip().split(",")
@@ -86,26 +86,36 @@ for line in open(os.path.join(SRCDIR, "name.csv")):
     en_us_area = vals[2].replace('"', '').replace("Dist.", "District")
     en_us_city = vals[3].strip().replace('"', '')
 
-    id_city = en_us_city.split(" ")[0].lower()
-    id_area = en_us_area.split(" ")[0].lower()
+    id_city = "".join(en_us_city.split(" ")).lower()
+    id_area = "".join(en_us_area.split(" ")).lower().replace("’", "")
 
-    if id_city == "new": id_city = "hsinpei"
+    if id_city == "nanhaiislands": id_city = "kaohsiungcity"
 
     name_city = (zh_tw_city, en_us_city)
     name_area = (zh_tw_area, en_us_area)
 
-    if not id_city in result:
-        result[id_city] = {"name": name_city, "area": {}}
-        os.makedirs(os.path.join(DESTDIR, id_city))
+    if not id_city in name:
+        name[id_city] = {"name": name_city, "area": {}}
+        os.makedirs(os.path.join(OUTDIR, id_city))
 
-    if not id_area in result[id_city]["area"]:
-        result[id_city]["area"][id_area] = name_area
+    if not id_area in name[id_city]["area"]:
+        name[id_city]["area"][id_area] = name_area
 
 
-json.dump(result, open(os.path.join(DESTDIR, "name.json"), "w"),
+json.dump(name, open(os.path.join(OUTDIR, "name.json"), "w"),
     ensure_ascii=False,
     indent=4
 )
+
+for city in name:
+    name_city = name[city]["name"][0]
+    for area in name[city]["area"]:
+        name_area = name[city]["area"][area][0]
+        ofilepath = os.path.join(OUTDIR, "%s/%s.js" % (city, area))
+        json.dump(code[name_city][name_area], open(ofilepath, "w"),
+            ensure_ascii=False,
+            indent=4
+        )
 
 
 sys.exit(0)
