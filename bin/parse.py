@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- encoding: utf8 -*-
+import shutil
 import json
 import sys
 import os
@@ -64,7 +65,8 @@ for reg in raw:
         result[city][area][road].append(spec)
 
 
-if not os.path.exists(DESTDIR): os.makedirs(DESTDIR)
+if os.path.exists(DESTDIR): shutil.rmtree(DESTDIR)
+os.makedirs(DESTDIR)
 
 json.dump(result, open(os.path.join(DESTDIR, "code.json"), "w"),
     ensure_ascii=False,
