@@ -21,3 +21,4 @@ Feature: Reference Official Postal Data
             | kaohsiung | yilan    | miaoli     |
             | yunlin    | hsinpei  | taipei     |
             | changhua  | pingtung | nantou     |
+          And city folders have one js per district

@@ -62,4 +62,8 @@ module.exports = function () {
         });
     });
 
+    this.Then(/^city folders have one js per district$/, function (next) {
+        return next.pending();
+    });
+
 };
