@@ -20,7 +20,7 @@
     "version": "0.1.0",
     "scripts": {
         "test-unit": "cucumber-js feature --require test --format json | cucumber-junit > report.xml",
-        "compile": "bin/parse.py",
+        "compile": "bin/parse.py doc lib",
         "test": "cucumber-js feature --require test --format pretty",
         "lint": "grunt jslint"
     },
