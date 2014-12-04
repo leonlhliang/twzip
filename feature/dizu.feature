@@ -4,7 +4,7 @@ Feature: Reference Official Postal Data
         Given official documents are in place:
             | doc/name.csv |
             | doc/code.txt |
-         When execute the command "npm run compile doc lib"
+         When execute the command "npm run compile"
          Then have a valid JSON at "lib/code.json"
           And file "lib/name.json" holds sample:
             | taipeicity    | 臺北市 | Taipei City     |
