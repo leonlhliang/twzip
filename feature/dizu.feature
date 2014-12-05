@@ -21,4 +21,4 @@ Feature: Reference Official Postal Data
             | kaohsiungcity  | yilancounty    | miaolicounty     |
             | yunlincounty   | newtaipeicity  | taipeicity       |
             | changhuacounty | pingtungcounty | nantoucounty     |
-          And each area in "lib/name.json" be one js file
+          And each area in "lib/name.json" be one "json" file

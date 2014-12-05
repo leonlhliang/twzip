@@ -63,14 +63,15 @@ module.exports = function () {
         });
     });
 
-    this.Then(/^each area in "([^"]*)" be one js file$/, function (file, next) {
+    this.Then(/^each area in "([^"]*)" be one "([^"]*)" file$/, function (file, ext, next) {
         var filepath = path.join(process.cwd(), file), areas = [], map = {};
 
         expect(require(filepath)).to.be.an("object");
         map = require(filepath);
 
         for (var city in map) {for (var area in map[city].area) {
-            areas.push(fsopen(path.join("lib", city, (area + ".js")), "r"));
+            var target = path.join("lib", city, [area, ext].join("."));
+            areas.push(fsopen(target, "r"));
         }}
 
         return promise.all(areas).then(function () {
