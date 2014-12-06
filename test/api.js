@@ -19,7 +19,16 @@ module.exports = function () {
         method = method.toLowerCase();
         try { chai.expect(methods).to.include(method); }
         catch (err) { return next(err); }
-        this.req = { endpoint: endpoint, method: method };
+        this.req = { endpoint: endpoint, method: method, query: {} };
+        return next();
+    });
+
+    this.Given(/^specify "([^"]*)" in query string$/, function (query, next) {
+        if (!this.req) { return next.fail(new Error("no request")); }
+        query = query.split("=");
+        try { chai.expect(query.length).to.equal(2); }
+        catch (err) { return next.fail(err); }
+        this.req.query[query[0]] = query[1];
         return next();
     });
 
@@ -42,6 +51,12 @@ module.exports = function () {
     this.Then(/^body contains fields:$/, function (table, next) {
         var given = this.req;
         if (!given) { return next.fail(new Error("no request")); }
+        if (given.method === "get" && given.query) {
+            given.endpoint += "?";
+            for (var field in given.query) {
+                given.endpoint += [field, given.query[field]].join("=");
+            }
+        }
         return request[given.method](given.endpoint).
         expect(given.status).then(function (res) {
             chai.expect(res.type).to.equal(given.type);
