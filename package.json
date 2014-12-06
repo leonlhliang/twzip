@@ -24,7 +24,7 @@
         "test-smoke": "cucumber-js feature/smoke.feature --require test --format pretty",
         "test-unit": "cucumber-js feature/unit.feature --require test --format summary",
         "compile": "bin/parse.py doc lib",
-        "cover": "istanbul cover test/* --report lcovonly && cat ./coverage/lcov.info | coveralls",
+        "cover": "istanbul cover test/http.js --report lcovonly && cat ./coverage/lcov.info | coveralls",
         "test": "cucumber-js feature/functional.feature --require test --format pretty",
         "lint": "grunt jslint"
     },
