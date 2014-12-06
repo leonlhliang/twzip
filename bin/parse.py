@@ -111,7 +111,7 @@ for city in name:
     name_city = name[city]["name"][0]
     for area in name[city]["area"]:
         name_area = name[city]["area"][area][0]
-        ofilepath = os.path.join(OUTDIR, "%s/%s.js" % (city, area))
+        ofilepath = os.path.join(OUTDIR, "%s/%s.json" % (city, area))
         json.dump(code[name_city][name_area], open(ofilepath, "w"),
             ensure_ascii=False,
             indent=4

@@ -1,12 +1,10 @@
-Feature: Reference Official Postal Data
+Feature: Test Runs On Local Machine
 
-    Scenario: Turn Origianl Text File Into JSON
-        Given official documents are in place:
-            | doc/name.csv |
-            | doc/code.txt |
-         When execute the command "npm run compile"
-         Then have a valid JSON at "lib/code.json"
-          And file "lib/name.json" holds sample:
+    Scenario: On Every Source File Save
+        Given required documents are in place:
+            | doc/name.csv | lib/name.json |
+            | doc/code.txt | lib/code.json |
+         Then file "lib/name.json" holds sample:
             | taipeicity    | 臺北市 | Taipei City     |
             | newtaipeicity | 新北市 | New Taipei City |
             | tainancity    | 臺南市 | Tainan City     |
@@ -21,4 +19,4 @@ Feature: Reference Official Postal Data
             | kaohsiungcity  | yilancounty    | miaolicounty     |
             | yunlincounty   | newtaipeicity  | taipeicity       |
             | changhuacounty | pingtungcounty | nantoucounty     |
-          And each area in "lib/name.json" be one js file
+          And each area in "lib/name.json" be one "json" file

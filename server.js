@@ -1,9 +1,10 @@
 var express = require("express");
+var morgan  = require("morgan");
 
 
 var server = express();
 
-server.use(require("morgan")("combined"));
+server.use(morgan("combined"));
 
 
 server.route("/v1/cities").get(function (req, res) {
