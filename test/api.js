@@ -49,13 +49,14 @@ module.exports = function () {
     });
 
     this.Then(/^body contains fields:$/, function (table, next) {
-        var given = this.req;
+        var given = this.req, queries = [];
         if (!given) { return next.fail(new Error("no request")); }
         if (given.method === "get" && given.query) {
             given.endpoint += "?";
             for (var field in given.query) {
-                given.endpoint += [field, given.query[field]].join("=");
+                queries.push([field, given.query[field]].join("="));
             }
+            given.endpoint += queries.join("&");
         }
         return request[given.method](given.endpoint).
         expect(given.status).then(function (res) {
