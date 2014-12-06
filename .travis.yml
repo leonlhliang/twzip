@@ -5,3 +5,7 @@ node_js:
 branches:
   only:
     - develop
+
+before_script:
+  - mkdir artifact
+  - mkdir artifact/coverage
