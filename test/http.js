@@ -5,7 +5,7 @@ var req  = require("supertest");
 module.exports = function () {
 
     this.Given(/^an express instance loaded as server$/, function (next) {
-        var filepath = path.join(process.cwd(), "server");
+        var filepath = path.join(__dirname, "../server");
         try { req = req(require(filepath)); } catch (e) { return next.fail(e); }
         return next();
     });
