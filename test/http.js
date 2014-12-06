@@ -1,5 +1,5 @@
-var server = require(require("path").join(process.cwd(), "app"));
-var req    = require("supertest")(server());
+var app = require(require("path").join(process.cwd(), "lib"));
+var req = require("supertest")(app());
 
 
 module.exports = function () {
