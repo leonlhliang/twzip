@@ -2,7 +2,6 @@
     "devDependencies": {
         "chai-as-promised": "4.1.1",
         "precommit-hook": "latest",
-        "cucumber-junit": "1.1.9",
         "expect.js": "0.3.1",
         "coveralls": "2.11.2",
         "bluebird": "2.3.11",
@@ -17,15 +16,15 @@
     "description": "Get 5-digit zipcode for Taiwanese address",
     "repository": "https://github.com/lihengl/dizu-api.git",
     "precommit": [
-        "test-local"
+        "test-smoke"
     ],
     "version": "0.1.0",
     "scripts": {
-        "test-local": "cucumber-js feature/local.feature --require test --format pretty",
-        "test-unit": "cucumber-js feature/unit.feature --require test --format json | cucumber-junit > artifact/report.xml",
+        "test-smoke": "cucumber-js feature/smoke.feature --require test --format pretty",
+        "test-unit": "cucumber-js feature/unit.feature --require test --format summary",
         "compile": "bin/parse.py doc lib",
         "cover": "istanbul cover test/* --report lcovonly && cat ./coverage/lcov.info | coveralls",
-        "test": "cucumber-js feature/functional.feature --require test --format json | cucumber-junit > artifact/report.xml",
+        "test": "cucumber-js feature/functional.feature --require test --format pretty",
         "lint": "grunt jslint"
     },
     "author": "lihengl",
