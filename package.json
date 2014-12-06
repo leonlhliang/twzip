@@ -17,14 +17,15 @@
     "description": "Get 5-digit zipcode for Taiwanese address",
     "repository": "https://github.com/lihengl/dizu-api.git",
     "precommit": [
-        "test"
+        "test-local"
     ],
     "version": "0.1.0",
     "scripts": {
-        "test-unit": "cucumber-js feature --require test --format json | cucumber-junit > report.xml",
+        "test-local": "cucumber-js feature/local.feature --require test --format pretty",
+        "test-unit": "cucumber-js feature/unit.feature --require test --format json | cucumber-junit > artifact/report.xml",
         "compile": "bin/parse.py doc lib",
         "cover": "istanbul cover test/* --report lcovonly && cat ./coverage/lcov.info | coveralls",
-        "test": "cucumber-js feature --require test --format pretty",
+        "test": "cucumber-js feature/functional.feature --require test --format json | cucumber-junit > artifact/report.xml",
         "lint": "grunt jslint"
     },
     "author": "lihengl",
