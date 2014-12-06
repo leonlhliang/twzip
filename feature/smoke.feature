@@ -11,7 +11,7 @@ Feature: Test Runs On Local Machine
             | changhuacounty | pingtungcounty | nantoucounty     |
           And each area in "lib/name.json" be one "json" file
 
-    Scenario Outline: Making RESTful Requests
+    Scenario Outline: Handle HTTP Requests
         Given an express instance loaded as server
          Then request to <endpoint> will respond with <status>
          Examples:

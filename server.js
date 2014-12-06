@@ -2,8 +2,8 @@
 var express = require("express");
 var morgan  = require("morgan");
 
-var mode = process.env.MODE || "test";
-var port = process.env.PORT || 3000;
+var mode = process.env.mode || "test";
+var port = process.env.port || 3000;
 
 
 var server = express();
