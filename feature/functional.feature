@@ -22,11 +22,11 @@ Feature: Reference Official Postal Data
             | changhuacounty | pingtungcounty | nantoucounty     |
           And each area in "lib/name.json" be one "json" file
 
-    Scenario Outline: Handle HTTP Requests
+    Scenario Outline: Determine Query Parameter
         Given an express instance loaded as server
-         Then request to <endpoint> will respond with <status>
-         Examples:
-            | endpoint                | status |
-            | /v1/zipcode?hello=world | 200    |
-            | /v1/cities?foo=bar      | 200    |
+         When send http GET to /v1/zipcode?<field>=<value>
+         Then receive response of <status>
+        Examples:
+            | status | field   | value       |
+            | 200    | address | Taipei City |
 

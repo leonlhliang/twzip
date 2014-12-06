@@ -11,9 +11,14 @@ Feature: Test Runs On Local Machine
             | changhuacounty | pingtungcounty | nantoucounty     |
           And each area in "lib/name.json" be one "json" file
 
-    Scenario Outline: Handle HTTP Requests
+    Scenario Outline: Server Health Check
         Given an express instance loaded as server
-         Then request to <endpoint> will respond with <status>
-         Examples:
-            | endpoint | status |
-            | /status  | 200    |
+         When send http GET to <endpoint>
+         Then receive response of <status>
+        Examples:
+            | endpoint      | status |
+            | /v1/zipcode   | 400    |
+            | /v1/cities    | 200    |
+            | /v1/districts | 200    |
+            | /v1/roads     | 200    |
+            | /status       | 200    |
