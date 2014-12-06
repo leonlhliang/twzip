@@ -2,9 +2,8 @@ Feature: Reference Official Postal Data
 
     Scenario: Turn Origianl Text File Into JSON
         Given required documents are in place:
-            | doc/name.csv |
-            | doc/code.txt |
-         When execute the command "npm run compile"
+            | lib/name.json |
+            | lib/code.json |
          Then have a valid JSON at "lib/code.json"
           And file "lib/name.json" holds sample:
             | taipeicity    | 臺北市 | Taipei City     |
@@ -22,3 +21,12 @@ Feature: Reference Official Postal Data
             | yunlincounty   | newtaipeicity  | taipeicity       |
             | changhuacounty | pingtungcounty | nantoucounty     |
           And each area in "lib/name.json" be one "json" file
+
+    Scenario Outline: Making RESTful Requests
+        Given an express instance loaded as server
+         Then request to <endpoint> will respond with <status>
+         Examples:
+            | endpoint                | status |
+            | /v1/zipcode?hello=world | 200    |
+            | /v1/cities?foo=bar      | 200    |
+

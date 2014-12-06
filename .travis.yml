@@ -1,10 +1,13 @@
 language: node_js
-node_js:
-  - "0.10"
+node_js: "0.10"
 
 branches:
-  only:
-    - develop
+  only: develop
+
+
+before_script:
+  - bin/parse.py doc lib
+  - rm -r doc
 
 after_script:
   - npm run cover
