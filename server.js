@@ -22,7 +22,7 @@ server.use(function (req, res, next) {
 server.route("/v1/zipcode").get(function (req, res) {
     if (!req.query.address) { return res.status(400).json({
         message: "missing required field address",
-        example: "?address=台北市士林區天玉街114號"
+        example: "?address=somewhere"
     });}
     return res.status(200).json({zipcode: "00000"});
 });

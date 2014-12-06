@@ -1,4 +1,4 @@
-var supertest = require("supertest");
+var supertest = require("supertest-as-promised");
 var path      = require("path");
 var chai      = require("chai");
 
@@ -15,16 +15,44 @@ module.exports = function () {
     });
 
     this.When(/^send http (.*) to (.*)$/, function (method, endpoint, next) {
-        try { this.resp = request[method.toLowerCase()](endpoint); }
-        catch (err) { return next.fail(err); }
+        var methods = ["get", "post", "put", "delete"];
+        method = method.toLowerCase();
+        try { chai.expect(methods).to.include(method); }
+        catch (err) { return next(err); }
+        this.req = { endpoint: endpoint, method: method };
         return next();
     });
 
-    this.Then(/^receive JSON response of (\d+)$/, function (status, next) {
-        if (!this.resp) { return next.fail(new Error("no responses")); }
+    this.Then(/^receive a (.*) response$/, function (type, next) {
+        if (!this.req) { return next.fail(new Error("no request")); }
+        try { chai.expect(type).to.equal("JSON"); }
+        catch (err) { return next.fail(err); }
+        this.req.type = "application/json";
+        return next();
+    });
+
+    this.Then(/^status code is (\d+)$/, function (status, next) {
+        if (!this.req) { return next.fail(new Error("no request")); }
         try { status = parseInt(status); }
         catch (err) { return next.fail(err); }
-        return this.resp.expect("Content-Type", /json/).expect(status, next);
+        this.req.status = status;
+        return next();
+    });
+
+    this.Then(/^body contains fields:$/, function (table, next) {
+        var given = this.req;
+        if (!given) { return next.fail(new Error("no request")); }
+        return request[given.method](given.endpoint).
+        expect(given.status).then(function (res) {
+            chai.expect(res.type).to.equal(given.type);
+            table.hashes().forEach(function (col) {
+                chai.expect(res.body).to.have.property(col.field);
+                chai.expect(res.body[col.field]).to.equal(col.value);
+            });
+            return next();
+        }).catch(function (err) {
+            return next.fail(err);
+        });
     });
 
 };

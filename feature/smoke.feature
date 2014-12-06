@@ -1,7 +1,18 @@
 Feature: Test Runs On Local Machine
 
-    Scenario: On Every Source File Save
-         Then folder "lib" holds folders:
+    Scenario: Turn Origianl Text File Into JSON
+        Given required documents are in place:
+            | lib/name.json |
+            | lib/code.json |
+         Then have a valid JSON at "lib/code.json"
+          And file "lib/name.json" holds sample:
+            | taipeicity    | 臺北市 | Taipei City     |
+            | newtaipeicity | 新北市 | New Taipei City |
+            | tainancity    | 臺南市 | Tainan City     |
+            | nantoucounty  | 南投縣 | Nantou County   |
+            | yilancounty   | 宜蘭縣 | Yilan County    |
+            | hualiencounty | 花蓮縣 | Hualien County  |
+          And folder "lib" holds folders:
             | kinmencounty   | penghucounty   | taitungcounty    |
             | taichungcity   | taoyuancounty  | keelungcity      |
             | hualiencounty  | hsinchucity    | tainancity       |
@@ -14,11 +25,13 @@ Feature: Test Runs On Local Machine
     Scenario Outline: Server Health Check
         Given an express instance loaded as server
          When send http GET to <endpoint>
-         Then receive JSON response of <status>
+         Then receive a JSON response
+          And status code is <status>
+          And body contains fields:
+            | field    | value |
+            | language | zh_tw |
         Examples:
             | endpoint      | status |
-            | /v1/zipcode   | 400    |
             | /v1/cities    | 200    |
             | /v1/districts | 200    |
             | /v1/roads     | 200    |
-            | /status       | 200    |
