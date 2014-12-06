@@ -65,9 +65,6 @@ for reg in raw:
         code[city][area][road].append(spec)
 
 
-if os.path.exists(OUTDIR): shutil.rmtree(OUTDIR)
-os.makedirs(OUTDIR)
-
 json.dump(code, open(os.path.join(OUTDIR, "code.json"), "w"),
     ensure_ascii=False,
     indent=4

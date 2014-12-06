@@ -1,19 +1,6 @@
-var express = require("express");
-var morgan  = require("morgan");
+#!/usr/bin/env node
+var server = require("./lib")(process.env.mode || "local");
+var port   = process.env.port || 3000;
 
-
-var server = express();
-
-server.use(morgan("combined"));
-
-
-server.route("/v1/cities").get(function (req, res) {
-    res.send(req.query);
-});
-
-server.route("/v1/zip").get(function (req, res) {
-    res.send(req.query);
-});
-
-
-server.listen(3000);
+console.log("server running at http://localhost:%d ...", port);
+server.listen(port);
