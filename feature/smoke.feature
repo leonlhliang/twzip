@@ -28,7 +28,7 @@ Feature: Test Runs On Local Machine
          Then receive a JSON response
           And status code is <status>
           And body contains fields:
-            | field    | value |
+            | name     | value |
             | language | zh_tw |
         Examples:
             | endpoint      | status |

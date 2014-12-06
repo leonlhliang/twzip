@@ -6,7 +6,7 @@ Feature: Reference Official Postal Data
          Then receive a JSON response
           And status code is 400
           And body contains fields:
-            | field   | value                          |
+            | name    | value                          |
             | message | missing required field address |
             | example | ?address=somewhere             |
 

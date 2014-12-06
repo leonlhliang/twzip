@@ -45,9 +45,10 @@ module.exports = function () {
         return request[given.method](given.endpoint).
         expect(given.status).then(function (res) {
             chai.expect(res.type).to.equal(given.type);
-            table.hashes().forEach(function (col) {
-                chai.expect(res.body).to.have.property(col.field);
-                chai.expect(res.body[col.field]).to.equal(col.value);
+            table.hashes().forEach(function (field) {
+                chai.expect(res.body).to.have.
+                property(field.name).and.to.
+                equal(field.value);
             });
             return next();
         }).catch(function (err) {
