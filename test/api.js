@@ -20,11 +20,11 @@ module.exports = function () {
         return next();
     });
 
-    this.Then(/^receive response of (\d+)$/, function (status, next) {
+    this.Then(/^receive JSON response of (\d+)$/, function (status, next) {
         if (!this.resp) { return next.fail(new Error("no responses")); }
         try { status = parseInt(status); }
         catch (err) { return next.fail(err); }
-        return this.resp.expect(status, next);
+        return this.resp.expect("Content-Type", /json/).expect(status, next);
     });
 
 };

@@ -40,8 +40,7 @@ server.route("/v1/roads").get(function (req, res) {
 });
 
 server.route("/status").get(function (req, res) {
-    res.status(200).type("text/plain").send("OK");
-    return req;
+    return res.status(200).json({language: req.lang, version: "0.1.0"});
 });
 
 server.use(function (err, req, res, next) {

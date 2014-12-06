@@ -14,7 +14,7 @@ Feature: Test Runs On Local Machine
     Scenario Outline: Server Health Check
         Given an express instance loaded as server
          When send http GET to <endpoint>
-         Then receive response of <status>
+         Then receive JSON response of <status>
         Examples:
             | endpoint      | status |
             | /v1/zipcode   | 400    |
