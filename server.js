@@ -11,9 +11,9 @@ var server = express();
 if (mode !== "test") { server.use(morgan("combined")); }
 
 server.use(function (req, res, next) {
-    var lang = req.query.lang || "zh_tw";
-    if (["en_us", "zh_tw"].indexOf(lang) === -1) { return res.status(404).json({
-        message: "lang parameter must be one of: zh_tw, en_us"
+    var lang = req.query.lang || "zh-tw";
+    if (["en-us", "zh-tw"].indexOf(lang) === -1) { return res.status(404).json({
+        message: "lang parameter must be one of: zh-tw, en-us"
     });}
     req.lang = lang;
     return next();

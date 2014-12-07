@@ -29,7 +29,7 @@ Feature: Test Runs On Local Machine
           And status code is <status>
           And body contains fields:
             | name     | value |
-            | language | zh_tw |
+            | language | zh-tw |
         Examples:
             | endpoint      | status |
             | /v1/cities    | 200    |

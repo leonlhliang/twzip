@@ -10,7 +10,7 @@ Feature: Reference Official Postal Data
           And status code is 404
           And body contains fields:
             | name    | value                                       |
-            | message | lang parameter must be one of: zh_tw, en_us |
+            | message | lang parameter must be one of: zh-tw, en-us |
 
     Scenario: Query Zipcode Without Specifying Address
          When send http GET to /v1/zipcode
