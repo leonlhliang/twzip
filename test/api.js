@@ -19,16 +19,18 @@ module.exports = function () {
         method = method.toLowerCase();
         try { chai.expect(methods).to.include(method); }
         catch (err) { return next(err); }
-        this.req = { endpoint: endpoint, method: method, query: {} };
+        this.req = { endpoint: endpoint, method: method };
+        if (method === "get") { this.req.queries = []; }
         return next();
     });
 
-    this.Given(/^specify "([^"]*)" in query string$/, function (query, next) {
+    this.When(/^specify "([^"]*)" in query string$/, function (query, next) {
         if (!this.req) { return next.fail(new Error("no request")); }
-        query = query.split("=");
-        try { chai.expect(query.length).to.equal(2); }
+        try { chai.expect(this.req.method).to.equal("get"); }
         catch (err) { return next.fail(err); }
-        this.req.query[query[0]] = query[1];
+        try { chai.expect(query.split("=").length).to.equal(2); }
+        catch (err) { return next.fail(err); }
+        this.req.queries.push(query);
         return next();
     });
 
@@ -51,13 +53,8 @@ module.exports = function () {
     this.Then(/^body contains fields:$/, function (table, next) {
         var given = this.req, queries = [];
         if (!given) { return next.fail(new Error("no request")); }
-        if (given.method === "get" && given.query) {
-            for (var field in given.query) {
-                queries.push([field, given.query[field]].join("="));
-            }
-            given.endpoint += ("?" + queries.join("&"));
-        }
         return request[given.method](given.endpoint).
+        query(given.queries.join("&")).
         expect(given.status).then(function (res) {
             chai.expect(res.type).to.equal(given.type);
             table.hashes().forEach(function (field) {
