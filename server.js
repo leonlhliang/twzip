@@ -11,12 +11,11 @@ var server = express();
 if (mode !== "test") { server.use(morgan("combined")); }
 
 server.use(function (req, res, next) {
-    var lang = req.query.lang || "zh-tw";
-    if (["en-us", "zh-tw"].indexOf(lang) === -1) { return res.status(404).json({
+    req.query.lang = req.query.lang || "zh-tw";
+    if (["en-us", "zh-tw"].indexOf(req.query.lang) !== -1) { return next(); }
+    return res.status(404).json({
         message: "lang parameter must be one of: zh-tw, en-us"
-    });}
-    req.lang = lang;
-    return next();
+    });
 });
 
 server.route("/v1/zipcode").get(function (req, res) {
@@ -28,19 +27,19 @@ server.route("/v1/zipcode").get(function (req, res) {
 });
 
 server.route("/v1/districts").get(function (req, res) {
-    return res.json({language: req.lang, districts: []});
+    return res.json({language: req.query.lang, districts: []});
 });
 
 server.route("/v1/cities").get(function (req, res) {
-    return res.json({language: req.lang, cities: []});
+    return res.json({language: req.query.lang, cities: []});
 });
 
 server.route("/v1/roads").get(function (req, res) {
-    return res.json({language: req.lang, roads: []});
+    return res.json({language: req.query.lang, roads: []});
 });
 
 server.route("/status").get(function (req, res) {
-    return res.status(200).json({language: req.lang, version: "0.1.0"});
+    return res.status(200).json({language: req.query.lang, version: "0.1.0"});
 });
 
 server.use(function (err, req, res, next) {
