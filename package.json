@@ -18,11 +18,12 @@
     "description": "Get 5-digit zipcode for Taiwanese address",
     "repository": "https://github.com/lihengl/dizu-api.git",
     "precommit": [
-        "test-smoke"
+        "test-local"
     ],
     "version": "0.1.0",
     "scripts": {
         "compile": "bin/parse.py doc lib",
+        "clean": "rm -r ./coverage && rm -r ./doc",
         "test-local": "istanbul cover cucumber.js",
         "test": "istanbul cover cucumber.js --report lcovonly && cat ./coverage/lcov.info | coveralls",
         "lint": "grunt jslint && travis-lint"
