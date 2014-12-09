@@ -1,6 +1,6 @@
-Feature: Test Runs On Local Machine
+Feature: Parse Official Postal Data Into JS Functions
 
-    Scenario: Turn Origianl Text File Into JSON
+    Scenario: Turning Rulset Text File Into JSON
         Given required documents are in place:
             | lib/name.json |
             | lib/code.json |
@@ -21,17 +21,3 @@ Feature: Test Runs On Local Machine
             | yunlincounty   | newtaipeicity  | taipeicity       |
             | changhuacounty | pingtungcounty | nantoucounty     |
           And each area in "lib/name.json" be one "json" file
-
-    Scenario Outline: Server Health Check
-        Given an express instance loaded as server
-         When send http GET to <endpoint>
-         Then receive a JSON response
-          And status code is <status>
-          And body contains fields:
-            | name     | value |
-            | language | zh-tw |
-        Examples:
-            | endpoint      | status |
-            | /v1/cities    | 200    |
-            | /v1/districts | 200    |
-            | /v1/roads     | 200    |

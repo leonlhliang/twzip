@@ -2,19 +2,18 @@ var supertest = require("supertest-as-promised");
 var path      = require("path");
 var chai      = require("chai");
 
-var filepath = path.join(process.cwd(), "server");
-var request  = supertest(require(filepath));
+var server = supertest(require(path.join(process.cwd(), "server")));
 
 
 module.exports = function () {
 
-    this.Given(/^an express instance loaded as server$/, function (next) {
-        try { chai.expect(request).is.not.undefined; }
+    this.Given(/^an express instance loaded as target server$/, function (next) {
+        try { chai.expect(server).is.not.undefined; }
         catch (err) { return next.fail(err); }
         return next();
     });
 
-    this.When(/^send http (.*) to (.*)$/, function (method, endpoint, next) {
+    this.When(/^send (.*) request to (.*)$/, function (method, endpoint, next) {
         var methods = ["get", "post", "put", "delete"];
         method = method.toLowerCase();
         try { chai.expect(methods).to.include(method); }
@@ -26,10 +25,10 @@ module.exports = function () {
 
     this.When(/^specify "([^"]*)" in query string$/, function (query, next) {
         if (!this.req) { return next.fail(new Error("no request")); }
-        try { chai.expect(this.req.method).to.equal("get"); }
-        catch (err) { return next.fail(err); }
-        try { chai.expect(query.split("=").length).to.equal(2); }
-        catch (err) { return next.fail(err); }
+        try {
+            chai.expect(this.req.method).to.equal("get");
+            chai.expect(query.split("=").length).to.equal(2);
+        } catch (err) { return next.fail(err); }
         this.req.queries.push(query);
         return next();
     });
@@ -53,14 +52,13 @@ module.exports = function () {
     this.Then(/^body contains fields:$/, function (table, next) {
         var given = this.req, queries = [];
         if (!given) { return next.fail(new Error("no request")); }
-        return request[given.method](given.endpoint).
+        return server[given.method](given.endpoint).
         query(given.queries.join("&")).
         expect(given.status).then(function (res) {
             chai.expect(res.type).to.equal(given.type);
             table.hashes().forEach(function (field) {
-                chai.expect(res.body).to.have.
-                property(field.name).and.to.
-                equal(field.value);
+                chai.expect(res.body).to.have.property(field.name).
+                and.to.equal(field.value);
             });
             return next();
         }).catch(function (err) {

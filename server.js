@@ -30,12 +30,12 @@ server.route("/v1/districts").get(function (req, res) {
     return res.json({language: req.query.lang, districts: []});
 });
 
-server.route("/v1/cities").get(function (req, res) {
-    return res.json({language: req.query.lang, cities: []});
+server.route("/v1/streets").get(function (req, res) {
+    return res.json({language: req.query.lang, streets: []});
 });
 
-server.route("/v1/roads").get(function (req, res) {
-    return res.json({language: req.query.lang, roads: []});
+server.route("/v1/cities").get(function (req, res) {
+    return res.json({language: req.query.lang, cities: []});
 });
 
 server.route("/status").get(function (req, res) {
@@ -44,8 +44,9 @@ server.route("/status").get(function (req, res) {
 
 server.use(function (err, req, res, next) {
     var detail = [req.path, err.stack].join("\n");
-    if (mode === "test") { return res.status(500).send(detail); }
-    res.status(500).send("server error");
+    res.status(500).type("text/plain");
+    if (mode === "test") { return res.send(detail); }
+    res.send("server error");
     return next;
 });
 
