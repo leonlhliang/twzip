@@ -6,60 +6,51 @@ var server = supertest(require(path.join(process.cwd(), "server")));
 
 
 module.exports = function () {
+    var expect = chai.expect;
 
     this.Given(/^an express instance loaded as target server$/, function (next) {
-        try { chai.expect(server).is.not.undefined; }
+        try { expect(server).is.not.undefined; }
         catch (err) { return next.fail(err); }
         return next();
     });
 
-    this.When(/^send (.*) request to (.*)$/, function (method, endpoint, next) {
+    this.When(/^send a (.*) request to (.*)$/, function (method, endpoint, next) {
         var methods = ["get", "post", "put", "delete"];
         method = method.toLowerCase();
-        try { chai.expect(methods).to.include(method); }
+        try { expect(methods).to.include(method); }
         catch (err) { return next(err); }
-        this.req = { endpoint: endpoint, method: method };
-        if (method === "get") { this.req.queries = []; }
+        this.expected = {endpoint: endpoint, method: method};
+        if (method === "get") { this.expected.queries = []; }
         return next();
     });
 
-    this.When(/^specify "([^"]*)" in query string$/, function (query, next) {
-        if (!this.req) { return next.fail(new Error("no request")); }
+    this.When(/^append URL with (.*) string$/, function (query, next) {
         try {
-            chai.expect(this.req.method).to.equal("get");
-            chai.expect(query.split("=").length).to.equal(2);
+            expect(this.expected).is.an("object");
+            expect(this.expected.method).to.equal("get");
+            expect(query.split("=").length).to.equal(2);
         } catch (err) { return next.fail(err); }
-        this.req.queries.push(query);
+        this.expected.queries.push(query);
         return next();
     });
 
-    this.Then(/^receive a (.*) response$/, function (type, next) {
-        if (!this.req) { return next.fail(new Error("no request")); }
-        try { chai.expect(type).to.equal("JSON"); }
-        catch (err) { return next.fail(err); }
-        this.req.type = "application/json";
-        return next();
-    });
-
-    this.Then(/^status code is (\d+)$/, function (status, next) {
-        if (!this.req) { return next.fail(new Error("no request")); }
+    this.Then(/^receive a JSON response of (\d+)$/, function (status, next) {
         try { status = parseInt(status); }
         catch (err) { return next.fail(err); }
-        this.req.status = status;
+        this.expected.type = "application/json";
+        this.expected.status = status;
         return next();
     });
 
-    this.Then(/^body contains fields:$/, function (table, next) {
-        var given = this.req, queries = [];
-        if (!given) { return next.fail(new Error("no request")); }
-        return server[given.method](given.endpoint).
-        query(given.queries.join("&")).
-        expect(given.status).then(function (res) {
-            chai.expect(res.type).to.equal(given.type);
-            table.hashes().forEach(function (field) {
-                chai.expect(res.body).to.have.property(field.name).
-                and.to.equal(field.value);
-            });
+    this.Then(/^body contains (.*) with (.*)$/, function (field, value, next) {
+        var expected = this.expected, queries = [];
+        try { expect(expected).to.be.an("object"); }
+        catch (err) { return next.fail(err); }
+        return server[expected.method](expected.endpoint).
+        query(expected.queries.join("&")).expect(expected.status).
+        then(function (res) {
+            expect(res.type).to.equal(expected.type);
+            expect(res.body).to.have.property(field).and.to.equal(value);
             return next();
         }).catch(function (err) {
             return next.fail(err);

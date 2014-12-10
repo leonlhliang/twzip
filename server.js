@@ -11,17 +11,18 @@ var server = express();
 if (mode !== "test") { server.use(morgan("combined")); }
 
 server.use(function (req, res, next) {
-    req.query.lang = req.query.lang || "zh-tw";
-    if (["en-us", "zh-tw"].indexOf(req.query.lang) !== -1) { return next(); }
-    return res.status(404).json({
-        message: "lang parameter must be one of: zh-tw, en-us"
+    req.query.lang = req.query.lang || "zh-TW";
+    if (["en-US", "zh-TW"].indexOf(req.query.lang) !== -1) { return next(); }
+    return res.status(400).json({
+        message: "lang must be one of: zh-TW, en-US"
     });
 });
 
 server.route("/v1/zipcode").get(function (req, res) {
     if (!req.query.address) { return res.status(400).json({
-        message: "missing required field address",
-        example: "?address=somewhere"
+        message: "parameter 'address' is required",
+        example: "?address=somewhere",
+        errno: "001"
     });}
     return res.status(200).json({zipcode: "00000"});
 });
