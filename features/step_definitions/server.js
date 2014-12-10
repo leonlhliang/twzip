@@ -9,7 +9,7 @@ module.exports = function () {
     var expect = chai.expect;
 
     this.Given(/^an express instance loaded as target server$/, function (next) {
-        try { expect(server).is.not.undefined; }
+        try { expect(server).is.not.undefined(); }
         catch (err) { return next.fail(err); }
         return next();
     });
