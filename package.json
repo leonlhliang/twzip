@@ -1,13 +1,16 @@
 {
     "devDependencies": {
+        "supertest-as-promised": "1.0.0",
+        "grunt-contrib-jshint": "0.10.0",
         "chai-as-promised": "4.1.1",
+        "recursive-readdir": "1.2.0",
         "precommit-hook": "latest",
         "expect.js": "0.3.1",
-        "supertest": "0.15.0",
         "coveralls": "2.11.2",
         "bluebird": "2.3.11",
         "cucumber": "0.4.4",
         "istanbul": "0.3.4",
+        "grunt": "0.4.5",
         "chai": "1.10.0"
     },
     "dependencies": {
@@ -17,16 +20,16 @@
     "description": "Get 5-digit zipcode for Taiwanese address",
     "repository": "https://github.com/lihengl/dizu-api.git",
     "precommit": [
-        "test-smoke"
+        "lint",
+        "test-local"
     ],
     "version": "0.1.0",
     "scripts": {
-        "cover": "istanbul cover test/http.js --report lcovonly && cat ./coverage/lcov.info | coveralls",
-        "test-smoke": "cucumber-js feature/smoke.feature --require test --format pretty",
-        "test-unit": "cucumber-js feature/unit.feature --require test --format summary",
-        "test": "cucumber-js feature/functional.feature --require test --format pretty",
-        "compile": "bin/parse.py doc lib",
-        "lint": "grunt jslint && travis-lint"
+        "compile": "bin/parse.py src lib",
+        "clean": "rm -r ./coverage && rm -r ./src",
+        "test-local": "istanbul cover cucumber.js",
+        "test": "istanbul cover cucumber.js --report lcovonly && cat ./coverage/lcov.info | coveralls",
+        "lint": "grunt jshint && travis-lint"
     },
     "author": "Li-Heng Liang <leonlhliang@gmail.com>",
     "main": "server.js",

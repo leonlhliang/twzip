@@ -4,10 +4,5 @@ node_js: "0.10"
 branches:
   only: develop
 
-
-before_script:
-  - bin/parse.py doc lib
-  - rm -r doc
-
-after_script:
-  - npm run cover
+before_script: npm run compile
+after_script: npm run clean

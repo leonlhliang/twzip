@@ -1,6 +1,6 @@
-Feature: Reference Official Postal Data
+Feature: Parse Official Postal Data Into JS Functions
 
-    Scenario: Turn Origianl Text File Into JSON
+    Scenario: Turning Rulset Text File Into JSON
         Given required documents are in place:
             | lib/name.json |
             | lib/code.json |
@@ -21,12 +21,3 @@ Feature: Reference Official Postal Data
             | yunlincounty   | newtaipeicity  | taipeicity       |
             | changhuacounty | pingtungcounty | nantoucounty     |
           And each area in "lib/name.json" be one "json" file
-
-    Scenario Outline: Handle HTTP Requests
-        Given an express instance loaded as server
-         Then request to <endpoint> will respond with <status>
-         Examples:
-            | endpoint                | status |
-            | /v1/zipcode?hello=world | 200    |
-            | /v1/cities?foo=bar      | 200    |
-

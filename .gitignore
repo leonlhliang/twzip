@@ -2,7 +2,7 @@
 npm-debug.log
 
 # dependency directory
-node_modules
+node_modules/
 
 # artifacts
 coverage/
