@@ -8,10 +8,10 @@ import os
 
 SCRIPT, SRCDIR, OUTDIR = sys.argv
 
-INDEX = {
-    "AREA": 5 + 3 * 3 + 3 * 3,
-    "CITY": 5 + 3 * 3,
-    "CODE": 5
+
+length = {
+    "city": 3 * 3,
+    "code": 5
 }
 
 raw = {}
@@ -21,14 +21,18 @@ for line in open(os.path.join(SRCDIR, "code.txt")):
     line = line.replace("４", "四").replace("５", "五").replace("６", "六")
     line = line.replace("７", "七").replace("８", "八").replace("９", "九")
 
-    code = line[:INDEX["CODE"]]
-    city = line[INDEX["CODE"]: INDEX["CITY"]]
+    code = line[:length["code"]]
+    line = line[length["code"]:]
+    city = line[:length["city"]]
+    line = line[length["city"]:]
 
-    area_index = 0 if line[INDEX["AREA"]] == " " else 3
-    area_index += INDEX["AREA"]
-    area = line[INDEX["CITY"]: area_index].strip()
+    length["area"] = 2 * 3
+    while line[length["area"]] != " " and length["area"] < 4 * 3:
+        length["area"] += 1
 
-    line = line[area_index:].strip()
+    area = line[:length["area"]]
+    line = line[length["area"]:].strip()
+
     road = line[:-3] if len(line.split(" ")) == 1 else line.split(" ")[0]
     spec = line.replace(road, "").replace("　", "").replace(" ", "")
 
