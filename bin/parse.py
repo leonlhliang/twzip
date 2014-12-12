@@ -9,6 +9,10 @@ import os
 SCRIPT, SRCDIR, OUTDIR = sys.argv
 
 
+if os.path.exists(OUTDIR): shutil.rmtree(OUTDIR)
+os.makedirs(OUTDIR)
+
+
 length = {
     "city": 3 * 3,
     "code": 5
@@ -56,23 +60,20 @@ for line in open(os.path.join(SRCDIR, "code.txt")):
     raw[key].append((code, spec, weight))
 
 
-code = {}
+rule = {}
 
-for reg in raw:
-    conditions = list(reversed(sorted(raw[reg], key=lambda tup: tup[2])))
-    city, area, road = reg[0], reg[1], reg[2]
-    if not city in code: code[city] = {}
-    if not area in code[city]: code[city][area] = {}
-    code[city][area][road] = []
+for region in raw:
+    conditions = list(reversed(sorted(raw[region], key=lambda tup: tup[2])))
+    city, area, road = region[0], region[1], region[2]
+    if not city in rule: rule[city] = {}
+    if not area in rule[city]: rule[city][area] = {}
+    rule[city][area][road] = []
     for condition in conditions:
         spec = "%s:%s" % (condition[0], condition[1])
-        code[city][area][road].append(spec)
+        rule[city][area][road].append(spec)
 
 
-if os.path.exists(OUTDIR): shutil.rmtree(OUTDIR)
-os.makedirs(OUTDIR)
-
-json.dump(code, open(os.path.join(OUTDIR, "code.json"), "w"),
+json.dump(rule, open(os.path.join(OUTDIR, "rule.json"), "w"),
     ensure_ascii=False,
     indent=4
 )
@@ -116,7 +117,7 @@ for city in name:
     for area in name[city]["area"]:
         name_area = name[city]["area"][area][0]
         ofilepath = os.path.join(OUTDIR, "%s/%s.json" % (city, area))
-        json.dump(code[name_city][name_area], open(ofilepath, "w"),
+        json.dump(rule[name_city][name_area], open(ofilepath, "w"),
             ensure_ascii=False,
             indent=4
         )

@@ -3,8 +3,8 @@ Feature: Parse Official Postal Data Into JS Functions
     Scenario: Turning Rulset Text File Into JSON
         Given required documents are in place:
             | lib/name.json |
-            | lib/code.json |
-         Then have a valid JSON at "lib/code.json"
+            | lib/rule.json |
+         Then have a valid JSON at "lib/rule.json"
           And file "lib/name.json" holds sample:
             | taipeicity    | 臺北市 | Taipei City     |
             | newtaipeicity | 新北市 | New Taipei City |
