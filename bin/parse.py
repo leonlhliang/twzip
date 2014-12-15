@@ -30,12 +30,12 @@ for line in open(os.path.join(SRCDIR, "code.txt")):
     city = line[:length["city"]]
     line = line[length["city"]:]
 
-    length["area"] = 2 * 3
-    while line[length["area"]] != " " and length["area"] < 4 * 3:
-        length["area"] += 1
+    length["dist"] = 2 * 3
+    while line[length["dist"]] != " " and length["dist"] < 4 * 3:
+        length["dist"] += 1
 
-    area = line[:length["area"]]
-    line = line[length["area"]:].strip()
+    dist = line[:length["dist"]]
+    line = line[length["dist"]:].strip()
 
     road = line[:-3] if len(line.split(" ")) == 1 else line.split(" ")[0]
     spec = line.replace(road, "").replace("　", "").replace(" ", "")
@@ -55,7 +55,7 @@ for line in open(os.path.join(SRCDIR, "code.txt")):
     if "單" in spec: weight -= (pow(10, 2) - pow(2, 0))
     if "連" in spec: weight -= (pow(10, 1) - pow(2, 0))
 
-    key = (city, area, road)
+    key = (city, dist, road)
     if not key in raw: raw[key] = []
     raw[key].append((code, spec, weight))
 
@@ -64,13 +64,13 @@ rule = {}
 
 for region in raw:
     conditions = list(reversed(sorted(raw[region], key=lambda tup: tup[2])))
-    city, area, road = region[0], region[1], region[2]
+    city, dist, road = region[0], region[1], region[2]
     if not city in rule: rule[city] = {}
-    if not area in rule[city]: rule[city][area] = {}
-    rule[city][area][road] = []
+    if not dist in rule[city]: rule[city][dist] = {}
+    rule[city][dist][road] = []
     for condition in conditions:
         spec = "%s:%s" % (condition[0], condition[1])
-        rule[city][area][road].append(spec)
+        rule[city][dist][road].append(spec)
 
 
 json.dump(rule, open(os.path.join(OUTDIR, "rule.json"), "w"),
@@ -87,24 +87,24 @@ for line in open(os.path.join(SRCDIR, "name.csv")):
     if vals[1] == "釣魚台": continue
 
     zh_tw_city = vals[1][:9]
-    zh_tw_area = vals[1][9:]
-    en_us_area = vals[2].replace('"', '').replace("Dist.", "District")
+    zh_tw_dist = vals[1][9:]
+    en_us_dist = vals[2].replace('"', '').replace("Dist.", "District")
     en_us_city = vals[3].strip().replace('"', '')
 
     id_city = "".join(en_us_city.split(" ")).lower()
-    id_area = "".join(en_us_area.split(" ")).lower().replace("’", "")
+    id_dist = "".join(en_us_dist.split(" ")).lower().replace("’", "")
 
     if id_city == "nanhaiislands": id_city = "kaohsiungcity"
 
     name_city = (zh_tw_city, en_us_city)
-    name_area = (zh_tw_area, en_us_area)
+    name_dist = (zh_tw_dist, en_us_dist)
 
     if not id_city in name:
-        name[id_city] = {"name": name_city, "area": {}}
+        name[id_city] = {"name": name_city, "district": {}}
         os.makedirs(os.path.join(OUTDIR, id_city))
 
-    if not id_area in name[id_city]["area"]:
-        name[id_city]["area"][id_area] = name_area
+    if not id_dist in name[id_city]["district"]:
+        name[id_city]["district"][id_dist] = name_dist
 
 
 json.dump(name, open(os.path.join(OUTDIR, "name.json"), "w"),
@@ -114,10 +114,10 @@ json.dump(name, open(os.path.join(OUTDIR, "name.json"), "w"),
 
 for city in name:
     name_city = name[city]["name"][0]
-    for area in name[city]["area"]:
-        name_area = name[city]["area"][area][0]
-        ofilepath = os.path.join(OUTDIR, "%s/%s.json" % (city, area))
-        json.dump(rule[name_city][name_area], open(ofilepath, "w"),
+    for dist in name[city]["district"]:
+        name_dist = name[city]["district"][dist][0]
+        ofilepath = os.path.join(OUTDIR, "%s/%s.json" % (city, dist))
+        json.dump(rule[name_city][name_dist], open(ofilepath, "w"),
             ensure_ascii=False,
             indent=4
         )
