@@ -3,7 +3,7 @@ var express = require("express");
 var morgan  = require("morgan");
 
 var mode = process.env.mode || "test";
-var port = process.env.port || 3000;
+var port = process.env.port || "3000";
 
 
 var server = express();
