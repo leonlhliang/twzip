@@ -5,4 +5,4 @@ branches:
   only: develop
 
 before_script: npm run compile
-after_script: npm run clean
+after_script: npm run bundle

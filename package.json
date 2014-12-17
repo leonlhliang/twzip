@@ -26,7 +26,7 @@
     "version": "0.1.0",
     "scripts": {
         "compile": "bin/parse.py src lib",
-        "clean": "rm -r ./coverage && rm -r ./src",
+        "bundle": "rm -r ./coverage && rm -r ./src && zip -r bundle.zip . -x *.git*",
         "test-local": "istanbul cover cucumber.js",
         "test": "istanbul cover cucumber.js --report lcovonly && cat ./coverage/lcov.info | coveralls",
         "lint": "grunt jshint && travis-lint"
