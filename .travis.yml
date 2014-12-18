@@ -4,6 +4,7 @@ branches:
     only: develop
 before_script: npm run compile
 before_deploy:
+    - rm Gruntfile.js .gitignore .jshintignore .jshintrc .travis.yml
     - rm -r src bin features coverage node_modules
     - zip -r latest.zip . -x *.git*
 deploy:
@@ -18,3 +19,5 @@ deploy:
     endpoint: s3-ap-southeast-1.amazonaws.com
     bucket: pkg.lihengl.com
     region: ap-southeast-1
+    on:
+        branch: develop
