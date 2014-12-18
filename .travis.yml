@@ -4,9 +4,10 @@ branches:
     only: develop
 before_script: npm run compile
 before_deploy:
-    - rm Gruntfile.js .gitignore .jshintignore .jshintrc .travis.yml
+    - rm Gruntfile.js
     - rm -r src bin features coverage node_modules
-    - zip -r latest.zip . -x *.git*
+    - mkdir artifacts
+    - zip -r artifacts/latest.zip . -x *.*
 deploy:
     provider: s3
     access_key_id:
@@ -15,7 +16,7 @@ deploy:
         secure: Zb2Z1/YRI/qbie0T1lFMfmEwoB2T/WDjGp09leEwOEuhUAGQ4+j8kOyo2Z9Au6hx6rEL067dPUcMRTmB1CM1yFVR0Xi/DUDVo6VKehbGX+1SdCaebX3/wkl0F2QZuAcoPucuDsC2fZ414OcgOeaPhXDikCFDM5j6Lymt2Q93WOY=
     skip_cleanup: true
     upload_dir: dizu/api
-    local_dir: latest.zip
+    local_dir: artifacts
     endpoint: s3-ap-southeast-1.amazonaws.com
     bucket: pkg.lihengl.com
     region: ap-southeast-1
