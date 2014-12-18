@@ -4,10 +4,11 @@ branches:
     only: develop
 before_script: npm run compile
 before_deploy:
-    - rm Gruntfile.js
+    - rm Gruntfile.js .jshintignore .jshintrc .travis.yml
     - rm -r src bin features coverage node_modules
+    - zip -r latest.zip . -x *.git*
     - mkdir artifacts
-    - zip -r artifacts/latest.zip . -x *.*
+    - mv latest.zip artifacts
 deploy:
     provider: s3
     access_key_id:
