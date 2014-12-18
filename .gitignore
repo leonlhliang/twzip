@@ -4,10 +4,6 @@ npm-debug.log
 # dependency directory
 node_modules/
 
-# artifacts
+# build artifacts
 coverage/
-
-# compiled
 lib/
-
-
