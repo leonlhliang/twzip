@@ -2,6 +2,9 @@
 var express = require("express");
 var morgan  = require("morgan");
 
+var postal = require("./postal");
+
+
 var mode = process.env.mode || "test";
 var port = process.env.port || "3000";
 
@@ -18,29 +21,16 @@ server.use(function (req, res, next) {
     });
 });
 
-server.route("/v1/zipcode").get(function (req, res) {
-    if (!req.query.address) { return res.status(400).json({
-        message: "parameter 'address' is required",
-        example: "?address=somewhere",
-        errno: "001"
-    });}
-    return res.status(200).json({zipcode: "00000"});
-});
-
-server.route("/v1/districts").get(function (req, res) {
-    return res.json({language: req.query.lang, districts: []});
-});
-
-server.route("/v1/streets").get(function (req, res) {
-    return res.json({language: req.query.lang, streets: []});
-});
-
-server.route("/v1/cities").get(function (req, res) {
-    return res.json({language: req.query.lang, cities: []});
-});
+server.route("/v1/districts").get(postal.district);
+server.route("/v1/zipcode").get(postal.zipcode);
+server.route("/v1/streets").get(postal.street);
+server.route("/v1/cities").get(postal.city);
 
 server.route("/status").get(function (req, res) {
-    return res.status(200).json({language: req.query.lang, version: "0.1.0"});
+    return res.status(200).json({
+        language: req.query.lang,
+        version: "0.1.0"
+    });
 });
 
 server.use(function (err, req, res, next) {
@@ -50,7 +40,6 @@ server.use(function (err, req, res, next) {
     res.send("server error");
     return next;
 });
-
 
 if (mode === "test") {
     module.exports = server;

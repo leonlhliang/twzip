@@ -77,7 +77,7 @@ module.exports = function () {
         return fs.readFileAsync(filepath).then(function (content) {
             var map = JSON.parse(content), areas = [];
             for (var city in map) {for (var area in map[city].area) {
-                var target = path.join("lib", city, [area, ext].join("."));
+                var target = path.join("postal", city, [area, ext].join("."));
                 areas.push(fs.openAsync(target, "r"));
             }}
             return promise.all(areas);

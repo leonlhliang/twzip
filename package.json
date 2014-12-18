@@ -25,7 +25,7 @@
     ],
     "version": "0.1.0",
     "scripts": {
-        "compile": "bin/parse.py src lib",
+        "compile": "bin/parse.py src postal",
         "test": "istanbul cover cucumber.js",
         "lint": "grunt jshint && travis-lint"
     },
