@@ -9,8 +9,7 @@ import os
 SCRIPT, SRCDIR, OUTDIR = sys.argv
 
 
-if os.path.exists(OUTDIR): shutil.rmtree(OUTDIR)
-os.makedirs(OUTDIR)
+if not os.path.exists(OUTDIR): os.makedirs(OUTDIR)
 
 
 length = {
