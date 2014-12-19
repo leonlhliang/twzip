@@ -2,7 +2,10 @@ language: node_js
 node_js: "0.10"
 branches:
     only: develop
-before_script: npm run compile
+before_install: npm install -g grunt-cli
+before_script:
+    - npm run compile
+    - npm run lint
 before_deploy:
     - cat coverage/lcov.info | coveralls
     - rm Gruntfile.js postal.sql .jshintignore .jshintrc .travis.yml
