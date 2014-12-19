@@ -22,7 +22,7 @@ module.exports = function () {
         return next();
     });
 
-    this.When(/^append URL with (.*) string$/, function (query, next) {
+    this.When(/^append URL with "(.*)" query$/, function (query, next) {
         try {
             expect(this.expected).is.an("object");
             expect(this.expected.method).to.equal("get");
@@ -40,7 +40,7 @@ module.exports = function () {
         return next();
     });
 
-    this.Then(/^body contains (.*) with (.*)$/, function (field, value, next) {
+    this.Then(/^body contains "(.*)" with "(.*)"$/, function (field, value, next) {
         var expected = this.expected, queries = [];
         try { expect(expected).to.be.an("object"); }
         catch (err) { return next.fail(err); }
