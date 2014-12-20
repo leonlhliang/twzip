@@ -11,6 +11,7 @@ var port = process.env.port || "3000";
 
 var server = express();
 
+/* istanbul ignore if */
 if (mode !== "test") { server.use(morgan("combined")); }
 
 server.use(function (req, res, next) {
@@ -33,6 +34,7 @@ server.route("/status").get(function (req, res) {
     });
 });
 
+/* istanbul ignore next */
 server.use(function (err, req, res, next) {
     var detail = [req.path, err.stack].join("\n");
     res.status(500).type("text/plain");
@@ -42,6 +44,7 @@ server.use(function (err, req, res, next) {
 });
 
 
+/* istanbul ignore else */
 if (mode === "test") {
     module.exports = server;
 } else if (mode === "local") {
