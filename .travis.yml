@@ -6,14 +6,15 @@ before_install:
     - npm install -g grunt-cli
 before_script:
     - npm run compile
+    - grunt jshint
 before_deploy:
     - cat coverage/lcov.info | coveralls
+    - npm prune
     - rm Gruntfile.js postal.sql .jshintignore .jshintrc .travis.yml
     - rm -r src bin features coverage
-    - npm prune --production
     - zip -r api-latest.zip . -x *.git*
-    - mkdir publish
-    - mv api-latest.zip publish
+    - mkdir build
+    - mv api-latest.zip build
 deploy:
     provider: s3
     access_key_id:
@@ -22,9 +23,9 @@ deploy:
         secure: Zb2Z1/YRI/qbie0T1lFMfmEwoB2T/WDjGp09leEwOEuhUAGQ4+j8kOyo2Z9Au6hx6rEL067dPUcMRTmB1CM1yFVR0Xi/DUDVo6VKehbGX+1SdCaebX3/wkl0F2QZuAcoPucuDsC2fZ414OcgOeaPhXDikCFDM5j6Lymt2Q93WOY=
     skip_cleanup: true
     upload_dir: dizu
-    local_dir: publish
+    local_dir: build
     endpoint: s3-ap-southeast-1.amazonaws.com
-    bucket: pkg.lihengl.com
+    bucket: src.lihengl.com
     region: ap-southeast-1
     on:
         branch: develop
