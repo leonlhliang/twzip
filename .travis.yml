@@ -9,9 +9,8 @@ before_script:
     - grunt jshint
 before_deploy:
     - cat coverage/lcov.info | coveralls
-    - npm prune
     - rm Gruntfile.js postal.sql .jshintignore .jshintrc .travis.yml
-    - rm -r src bin features coverage
+    - rm -r src bin features coverage node_modules
     - zip -r api-latest.zip . -x *.git*
     - mkdir build
     - mv api-latest.zip build

@@ -8,13 +8,13 @@ var server = supertest(require(path.join(process.cwd(), "server")));
 module.exports = function () {
     var expect = chai.expect;
 
-    this.Given(/^an express instance loaded as target server$/, function (next) {
+    this.Given(/^an express server loaded as target$/, function (next) {
         return next();
     });
 
-    this.When(/^send a (.*) request to (.*)$/, function (method, endpoint, next) {
+    this.When(/^send a (.*) request to (.*)$/, function (method, url, next) {
         method = method.toLowerCase();
-        this.expected = {endpoint: endpoint, method: method};
+        this.expected = {url: url, method: method};
         /* istanbul ignore else */
         if (method === "get") { this.expected.queries = []; }
         return next();
@@ -31,13 +31,13 @@ module.exports = function () {
         return next();
     });
 
-    this.Then(/^body contains "(.*)" with "(.*)"$/, function (field, value, next) {
+    this.Then(/^body have "(.*)" with "(.*)"$/, function (key, value, next) {
         var expected = this.expected, queries = [];
-        return server[expected.method](expected.endpoint).
+        return server[expected.method](expected.url).
         query(expected.queries.join("&")).expect(expected.status).
         then(function (res) {
             expect(res.type).to.equal(expected.type);
-            expect(res.body).to.have.property(field).and.to.equal(value);
+            expect(res.body).to.have.property(key).and.to.equal(value);
             return next();
         }).catch(function (err) {
             return next.fail(err);
