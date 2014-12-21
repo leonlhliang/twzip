@@ -15,6 +15,7 @@ module.exports = function () {
     this.When(/^send a (.*) request to (.*)$/, function (method, endpoint, next) {
         method = method.toLowerCase();
         this.expected = {endpoint: endpoint, method: method};
+        /* istanbul ignore else */
         if (method === "get") { this.expected.queries = []; }
         return next();
     });
