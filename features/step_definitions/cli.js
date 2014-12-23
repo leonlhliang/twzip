@@ -65,7 +65,8 @@ module.exports = function () {
         var filepath = path.join(process.cwd(), file);
 
         return fs.readFileAsync(filepath).then(function (content) {
-            content = JSON.parse(content), areas = [];
+            var areas = [];
+            content = JSON.parse(content);
             for (var city in content) {
                 for (var dist in content[city].district) {
                     var target = path.join("postal", city, [dist, "json"].join("."));
