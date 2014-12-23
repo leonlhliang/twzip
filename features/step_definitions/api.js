@@ -15,8 +15,7 @@ module.exports = function () {
     this.When(/^send a (.*) request to (.*)$/, function (method, url, next) {
         method = method.toLowerCase();
         this.expected = {url: url, method: method};
-        /* istanbul ignore else */
-        if (method === "get") { this.expected.queries = []; }
+        this.expected.queries = [];
         return next();
     });
 
@@ -31,14 +30,14 @@ module.exports = function () {
         return next();
     });
 
-    this.Then(/^body have "(.*)" with "(.*)"$/, function (key, value, next) {
-        var given = this.expected, queries = [];
+    this.Then(/^body's "([^"]*)" equals "([^"]*)"$/, function (key, val, next) {
+        var given = this.expected;
         return server[given.method](given.url).
         query(given.queries.join("&")).
         expect(given.status).
         then(function (res) {
             expect(res.type).to.equal(given.type);
-            expect(res.body).to.have.property(key).and.to.equal(value);
+            expect(res.body).to.have.property(key).and.to.equal(val);
             return next();
         });
     });

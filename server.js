@@ -2,11 +2,12 @@
 var express = require("express");
 var morgan  = require("morgan");
 
-var postal = require("./postal");
+var version = require("./package.json").version;
+var postal  = require("./postal");
 
 
-var mode = process.env.mode || "test";
-var port = process.env.port || "3000";
+var mode = process.env.MODE || "test";
+var port = process.env.PORT || "3000";
 
 
 var server = express();
@@ -30,7 +31,13 @@ server.route("/v1/cities").get(postal.city);
 server.route("/status").get(function (req, res) {
     return res.status(200).json({
         language: req.query.lang,
-        version: "0.1.0"
+        version: version
+    });
+});
+
+server.route("/*").all(function (req, res) {
+    return res.status(404).json({
+        message: "notfound"
     });
 });
 
