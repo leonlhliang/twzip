@@ -4,6 +4,7 @@ Feature: Parse Official Postal Data Into JS Functions
         Given required documents are in place:
             | postal/name.json |
             | postal/rule.json |
+         When execute the command "npm run compile"
          Then have a valid JSON at "postal/rule.json"
           And file "postal/name.json" holds sample:
             | taipeicity    | 臺北市 | Taipei City     |
@@ -20,4 +21,4 @@ Feature: Parse Official Postal Data Into JS Functions
             | kaohsiungcity  | yilancounty    | miaolicounty     |
             | yunlincounty   | newtaipeicity  | taipeicity       |
             | changhuacounty | pingtungcounty | nantoucounty     |
-          And each area in "postal/name.json" be one "json" file
+          And each area in "postal/name.json" be one JSON file

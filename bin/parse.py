@@ -100,7 +100,9 @@ for line in open(os.path.join(SRCDIR, "name.csv")):
 
     if not id_city in name:
         name[id_city] = {"name": name_city, "district": {}}
-        os.makedirs(os.path.join(OUTDIR, id_city))
+        outdir = os.path.join(OUTDIR, id_city)
+        if not os.path.exists(outdir):
+            os.makedirs(outdir)
 
     if not id_dist in name[id_city]["district"]:
         name[id_city]["district"][id_dist] = name_dist

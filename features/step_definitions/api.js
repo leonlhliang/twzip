@@ -32,15 +32,14 @@ module.exports = function () {
     });
 
     this.Then(/^body have "(.*)" with "(.*)"$/, function (key, value, next) {
-        var expected = this.expected, queries = [];
-        return server[expected.method](expected.url).
-        query(expected.queries.join("&")).expect(expected.status).
+        var given = this.expected, queries = [];
+        return server[given.method](given.url).
+        query(given.queries.join("&")).
+        expect(given.status).
         then(function (res) {
-            expect(res.type).to.equal(expected.type);
+            expect(res.type).to.equal(given.type);
             expect(res.body).to.have.property(key).and.to.equal(value);
             return next();
-        }).catch(function (err) {
-            return next.fail(err);
         });
     });
 
