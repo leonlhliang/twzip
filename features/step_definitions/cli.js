@@ -17,16 +17,12 @@ module.exports = function () {
             });
         })).then(function () {
             return next();
-        }).catch(function (err) {
-            return next.fail(err);
         });
     });
 
     this.When(/^execute the command "([^"]*)"$/, function (cmd, next) {
         return runexec(cmd).then(function () {
             return next();
-        }).catch(function (err) {
-            return next.fail(err);
         });
     });
 
@@ -35,8 +31,6 @@ module.exports = function () {
         return fs.readFileAsync(filepath).then(function (content) {
             JSON.parse(content);
             return next();
-        }).catch(function (err) {
-            return next.fail(err);
         });
     });
 
@@ -52,8 +46,6 @@ module.exports = function () {
                 and.to.deep.equal([row[1], row[2]]);
             });
             return next();
-        }).catch(function (err) {
-            return next.fail(err);
         });
     });
 
@@ -66,25 +58,24 @@ module.exports = function () {
                 });
             });
             return next();
-        }).catch(function (err) {
-            return next.fail(err);
         });
     });
 
-    this.Then(/^each area in "([^"]*)" be one "([^"]*)" file$/, function (file, ext, next) {
+    this.Then(/^each area in "([^"]*)" be one JSON file$/, function (file, next) {
         var filepath = path.join(process.cwd(), file);
 
         return fs.readFileAsync(filepath).then(function (content) {
-            var map = JSON.parse(content), areas = [];
-            for (var city in map) {for (var area in map[city].area) {
-                var target = path.join("lib", city, [area, ext].join("."));
-                areas.push(fs.openAsync(target, "r"));
-            }}
+            var areas = [];
+            content = JSON.parse(content);
+            for (var city in content) {
+                for (var dist in content[city].district) {
+                    var target = path.join("postal", city, [dist, "json"].join("."));
+                    areas.push(fs.openAsync(target, "r"));
+                }
+            }
             return promise.all(areas);
         }).then(function () {
             return next();
-        }).catch(function (err) {
-            return next.fail(err);
         });
     });
 

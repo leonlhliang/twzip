@@ -1,8 +1,30 @@
 language: node_js
 node_js: "0.10"
-
 branches:
-  only: develop
-
-before_script: npm run compile
-after_script: npm run clean
+    only: develop
+before_install:
+    - npm install -g grunt-cli
+before_script:
+    - npm run compile
+    - grunt jshint
+before_deploy:
+    - cat coverage/lcov.info | coveralls
+    - rm Gruntfile.js postal.sql .jshintignore .jshintrc .travis.yml
+    - rm -r src bin features coverage node_modules
+    - zip -r api-latest.zip . -x *.git*
+    - mkdir build
+    - mv api-latest.zip build
+deploy:
+    provider: s3
+    access_key_id:
+        secure: kEE0q6NmPsq2OotudjVfTSn88d0r8Iz06Ogw4sQRE4ii//+RZ0aoR1qK2VB8SQJxBwyDIxe1qlTBw8vKGkSGrDxv59m4jbXs4O3SY/oxF2KN+FquA3fUJ/JiLNLDtNMuEIvde8yhZ8p0DaRLr/rQpBrRkKnt0FiW11h+JMfNBds=
+    secret_access_key:
+        secure: Zb2Z1/YRI/qbie0T1lFMfmEwoB2T/WDjGp09leEwOEuhUAGQ4+j8kOyo2Z9Au6hx6rEL067dPUcMRTmB1CM1yFVR0Xi/DUDVo6VKehbGX+1SdCaebX3/wkl0F2QZuAcoPucuDsC2fZ414OcgOeaPhXDikCFDM5j6Lymt2Q93WOY=
+    skip_cleanup: true
+    upload_dir: dizu
+    local_dir: build
+    endpoint: s3-ap-southeast-1.amazonaws.com
+    bucket: src.lihengl.com
+    region: ap-southeast-1
+    on:
+        branch: develop
