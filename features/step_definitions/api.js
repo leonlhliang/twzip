@@ -19,7 +19,7 @@ module.exports = function () {
         return next();
     });
 
-    this.When(/^append URL with "(.*)" query$/, function (query, next) {
+    this.When(/^append URL with "(.*)" string$/, function (query, next) {
         this.expected.queries.push(query);
         return next();
     });

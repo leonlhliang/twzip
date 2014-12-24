@@ -28,17 +28,17 @@ Feature: RESTful API HTTP Service
 
     Scenario Outline: Respond Unsupported Languages with Error
          When send a GET request to /v1/districts
-          And append URL with "<ISO-CODE>" query
+          And append URL with "<query>" string
          Then receive a JSON response of 400
           And body's "message" equals "lang must be one of: zh-TW, en-US"
         Examples:
-            | ISO-CODE   |
+            | query      |
             | lang=ja    |
             | lang=en    |
             | lang=zh-CN |
 
     Scenario: Querying Zipcode With Address
          When send a GET request to /v1/zipcode
-          And append URL with "address=台北市士林區中山北路七段" query
+          And append URL with "address=台北市士林區中山北路七段" string
          Then receive a JSON response of 200
           And body's "zipcode" equals "00000"
