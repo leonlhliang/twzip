@@ -1,4 +1,4 @@
-Feature: RESTful API HTTP Service
+Feature: RESTAPI HTTP Service
 
     Background:
         Given an express server loaded as target
@@ -16,15 +16,15 @@ Feature: RESTful API HTTP Service
             | /v1/cities    | 200    | language | zh-TW    |
 
     Scenario Outline: Non-Existing Endpoints Should Fail
-        When send a <method> request to <endpoint>
+        When send a <method> request to /non/existing.url
         Then receive a JSON response of 404
          And body's "message" equals "notfound"
         Examples:
-            | method  | endpoint   |
-            | POST    | /v1/random |
-            | GET     | /random    |
-            | PUT     | /foo       |
-            | DELETE  | /bar.html  |
+            | method |
+            | POST   |
+            | GET    |
+            | PUT    |
+            | DELETE |
 
     Scenario Outline: Respond Unsupported Languages with Error
          When send a GET request to /v1/districts
