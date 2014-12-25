@@ -29,13 +29,13 @@ Feature: RESTAPI HTTP Service
     Scenario Outline: Respond Unsupported Languages with Error
          When send a GET request to /v1/districts
           And append URL with "<query>" string
-         Then receive a JSON response of 400
-          And body's "message" equals "lang must be one of: zh-TW, en-US"
+         Then receive a JSON response of 404
+          And body's "message" equals "supported languages: zh-TW, en-US"
         Examples:
             | query      |
-            | lang=ja    |
-            | lang=en    |
             | lang=zh-CN |
+            | lang=en    |
+            | lang=ja    |
 
     Scenario: Querying Zipcode With Address
          When send a GET request to /v1/zipcode

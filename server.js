@@ -18,8 +18,8 @@ if (mode !== "test") { server.use(morgan("combined")); }
 server.use(function (req, res, next) {
     req.query.lang = req.query.lang || "zh-TW";
     if (["en-US", "zh-TW"].indexOf(req.query.lang) !== -1) { return next(); }
-    return res.status(400).json({
-        message: "lang must be one of: zh-TW, en-US"
+    return res.status(404).json({
+        message: "supported languages: zh-TW, en-US"
     });
 });
 
