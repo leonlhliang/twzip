@@ -4,11 +4,10 @@ node_js:
 branches:
     only: develop
 before_install:
-    - sudo npm install -g grunt-cli
     - sudo pip install -q awscli
 before_script:
     - npm run compile
-    - grunt jshint
+    - grunt yhint
 before_deploy:
     - cat coverage/lcov.info | coveralls
     - rm Gruntfile.js postal.sql .jshintignore .jshintrc .travis.yml
