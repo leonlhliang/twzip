@@ -1,9 +1,11 @@
 language: node_js
-node_js: "0.10"
+node_js:
+    - '0.10'
 branches:
     only: develop
 before_install:
     - npm install -g grunt-cli
+    - pip install awscli
 before_script:
     - npm run compile
     - grunt jshint
@@ -15,16 +17,18 @@ before_deploy:
     - mkdir build
     - mv api-latest.zip build
 deploy:
-    provider: s3
-    access_key_id:
-        secure: kEE0q6NmPsq2OotudjVfTSn88d0r8Iz06Ogw4sQRE4ii//+RZ0aoR1qK2VB8SQJxBwyDIxe1qlTBw8vKGkSGrDxv59m4jbXs4O3SY/oxF2KN+FquA3fUJ/JiLNLDtNMuEIvde8yhZ8p0DaRLr/rQpBrRkKnt0FiW11h+JMfNBds=
     secret_access_key:
-        secure: Zb2Z1/YRI/qbie0T1lFMfmEwoB2T/WDjGp09leEwOEuhUAGQ4+j8kOyo2Z9Au6hx6rEL067dPUcMRTmB1CM1yFVR0Xi/DUDVo6VKehbGX+1SdCaebX3/wkl0F2QZuAcoPucuDsC2fZ414OcgOeaPhXDikCFDM5j6Lymt2Q93WOY=
+        secure: SD9NAE04mWdKf+PBgrbayEyQaNC1wx65PK2finSWwD5JL0/2cUSjyXIG8k4/AX+T0rLdCv4oP0vy9USY529FE7LJrdny9q/mM/5R4iv8yNIVc3g2V0BdEauOFQDcUovOJR0STS6aiCzVt6sDlIdqFb51wsZfkjCZAE7uGBSCNDk=
+    access_key_id:
+        secure: NQbHvJEiGhILx/b1oaHtcDgcsF2NtTwC6vzXNzq2rTKAz8M5C+U531c8gSbHOeWt4Yav4t3B4jMrk2vtJPmZFisoFup4h5lCVoa3Fj1TSZy7XHbZE9c8gbRLub+BLmDweuoHBoOZ1U4uajwkFnijGxvd2qLUeCCA2gdchfWbuW0=
     skip_cleanup: true
     upload_dir: dizu
     local_dir: build
+    provider: s3
     endpoint: s3-ap-southeast-1.amazonaws.com
     bucket: src.lihengl.com
     region: ap-southeast-1
-    on:
-        branch: develop
+after_deploy:
+    - aws elasticbeanstalk delete-application-version --application-name dizu-api --version-label latest --delete-source-bundle
+    - aws elasticbeanstalk create-application-version --application-name dizu-api --version-label latest --source-bundle S3Bucket=src.lihengl.com,S3Key=dizu/api-latest.zip
+    - aws elasticbeanstalk update-environment --environment-id e-azim78xmrf --version-label latest
