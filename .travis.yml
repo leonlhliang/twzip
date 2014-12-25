@@ -7,7 +7,7 @@ before_install:
     - sudo pip install -q awscli
 before_script:
     - npm run compile
-    - grunt yhint
+    - grunt jshint
 before_deploy:
     - cat coverage/lcov.info | coveralls
     - rm Gruntfile.js postal.sql .jshintignore .jshintrc .travis.yml
