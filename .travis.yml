@@ -27,6 +27,8 @@ deploy:
     endpoint: s3-ap-southeast-1.amazonaws.com
     bucket: src.lihengl.com
     region: ap-southeast-1
+    on:
+        branch: develop
 after_deploy:
     - aws elasticbeanstalk delete-application-version --application-name dizu-api --version-label latest --delete-source-bundle
     - aws elasticbeanstalk create-application-version --application-name dizu-api --version-label latest --source-bundle S3Bucket=src.lihengl.com,S3Key=dizu/api-latest.zip
