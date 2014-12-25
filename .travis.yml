@@ -4,8 +4,8 @@ node_js:
 branches:
     only: develop
 before_install:
-    - npm install -g grunt-cli
-    - pip install awscli
+    - sudo npm install -g grunt-cli
+    - sudo pip install -q awscli
 before_script:
     - npm run compile
     - grunt jshint
