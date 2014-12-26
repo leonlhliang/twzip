@@ -10,7 +10,7 @@ var mode = process.env.MODE || "test";
 var port = process.env.PORT || "3000";
 
 
-var server = express();
+var server = express().disable("x-powered-by");
 
 /* istanbul ignore if */
 if (mode !== "test") { server.use(morgan("combined")); }
