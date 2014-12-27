@@ -30,6 +30,6 @@ deploy:
     on:
         branch: develop
 after_deploy:
-    - aws elasticbeanstalk delete-application-version --application-name dizu-api --version-label latest --delete-source-bundle
+    - aws elasticbeanstalk delete-application-version --application-name dizu-api --version-label latest
     - aws elasticbeanstalk create-application-version --application-name dizu-api --version-label latest --source-bundle S3Bucket=src.lihengl.com,S3Key=dizu/api-latest.zip
     - aws elasticbeanstalk update-environment --environment-id e-vxjma2vfsc --version-label latest
