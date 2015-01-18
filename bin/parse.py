@@ -8,7 +8,6 @@ import os
 
 SCRIPT, SRCDIR, OUTDIR = sys.argv
 
-
 if not os.path.exists(OUTDIR): os.makedirs(OUTDIR)
 
 
