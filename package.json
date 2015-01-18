@@ -29,7 +29,7 @@
   "scripts": {
     "compile": "grunt clean && bin/parse.py src postal",
     "test": "istanbul cover cucumber.js",
-    "lint": "grunt jshint && travis-lint"
+    "lint": "grunt jshint"
   },
   "author": "Li-Heng Liang <admin@lihengl.com>",
   "main": "server.js",
