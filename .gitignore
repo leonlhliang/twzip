@@ -6,6 +6,6 @@ node_modules/
 
 # build artifacts
 coverage/
-postal/
-!postal/index.js
+src/
+!src/index.js
 

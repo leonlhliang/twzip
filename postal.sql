@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.6.22)
 # Database: postal
-# Generation Time: 2014-12-12 14:00:48 +0000
+# Generation Time: 2015-01-21 16:21:53 +0000
 # ************************************************************
 
 
@@ -27,10 +27,13 @@ DROP TABLE IF EXISTS `city`;
 
 CREATE TABLE `city` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `alias` varchar(50) NOT NULL DEFAULT '',
+  `alias` varchar(50) DEFAULT '',
   `name_zhtw` varchar(50) NOT NULL DEFAULT '',
   `name_enus` varchar(50) DEFAULT '',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_zhtw` (`name_zhtw`),
+  UNIQUE KEY `alias` (`alias`),
+  UNIQUE KEY `name_enus` (`name_enus`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -42,7 +45,7 @@ DROP TABLE IF EXISTS `district`;
 
 CREATE TABLE `district` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `alias` varchar(50) NOT NULL DEFAULT '',
+  `alias` varchar(50) DEFAULT '',
   `name_zhtw` varchar(50) NOT NULL DEFAULT '',
   `name_enus` varchar(50) DEFAULT '',
   PRIMARY KEY (`id`)
@@ -78,7 +81,7 @@ DROP TABLE IF EXISTS `street`;
 
 CREATE TABLE `street` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `alias` varchar(50) NOT NULL DEFAULT '',
+  `alias` varchar(50) DEFAULT '',
   `name_zhtw` varchar(50) NOT NULL DEFAULT '',
   `name_enus` varchar(50) DEFAULT '',
   PRIMARY KEY (`id`)

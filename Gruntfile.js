@@ -13,12 +13,14 @@ module.exports = function (grunt) {
             ]
         },
         clean: [
-            "postal/*/*.json"
+            "src/*/*.json"
         ]
     });
 
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-clean");
-    grunt.registerTask("default", ["jshint"]);
+    grunt.registerTask("default", [
+        "jshint"
+    ]);
 
 };

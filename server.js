@@ -3,7 +3,7 @@ var express = require("express");
 var morgan  = require("morgan");
 
 var version = require("./package.json").version;
-var postal  = require("./postal");
+var postal  = require("./src");
 
 
 var mode = process.env.MODE || "test";
