@@ -11,7 +11,7 @@ before_script:
 before_deploy:
     - cat coverage/lcov.info | coveralls
     - rm Gruntfile.js postal.sql .jshintignore .jshintrc .travis.yml
-    - rm -r src bin features coverage node_modules
+    - rm -r doc bin features coverage node_modules
     - zip -r api-latest.zip . -x *.git*
     - mkdir build
     - mv api-latest.zip build

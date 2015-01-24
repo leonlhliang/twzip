@@ -27,7 +27,7 @@
   ],
   "version": "0.1.0",
   "scripts": {
-    "compile": "grunt clean && bin/parse.py src postal",
+    "compile": "grunt clean && bin/parse.py doc src",
     "test": "istanbul cover cucumber.js",
     "lint": "grunt jshint"
   },

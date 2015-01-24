@@ -69,7 +69,7 @@ module.exports = function () {
             content = JSON.parse(content);
             for (var city in content) {
                 for (var dist in content[city].district) {
-                    var target = path.join("postal", city, [dist, "json"].join("."));
+                    var target = path.join("src", city, [dist, "json"].join("."));
                     areas.push(fs.openAsync(target, "r"));
                 }
             }
