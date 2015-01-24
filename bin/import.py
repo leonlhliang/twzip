@@ -1,13 +1,33 @@
 #!/usr/bin/env python
+# -*- encoding: utf8 -*-
 import json
 import sys
 import web
 
+
 SCRIPT, USERNAME, PASSWORD = sys.argv
+
+
+name = {}
+
+for line in open("doc/name.csv"):
+    vals = line.strip().split(",")
+
+    if vals[1] == "釣魚台": continue
+
+    zh_tw_city = unicode(vals[1][:9], "utf-8")
+    zh_tw_dist = unicode(vals[1][9:], "utf-8")
+    en_us_dist = vals[2].replace('"', '').replace("Dist.", "District")
+    en_us_city = vals[3].strip().replace('"', '')
+
+    name[zh_tw_city] = en_us_city
+    name[zh_tw_dist] = en_us_dist
+
 
 infile = open("src/rule.json")
 data = json.load(infile)
 infile.close()
+
 
 db = web.database(
     use_unicode=0,
@@ -20,41 +40,20 @@ db = web.database(
 )
 
 for city in data:
-    id_city = db.select("city",
-        where="name_zhtw=$city",
-        vars=locals())
-    if not id_city:
-        id_city = db.insert("city",
-            name_zhtw=city,
-            name_enus=city,
-            alias=city)
-    else:
-        id_city = id_city[0].id
+    city_enus = name.get(city, city)
+    city_id = db.insert("city",
+        name_zhtw=city,
+        name_enus=city_enus)
     for district in data[city]:
-        id_district = db.select("district",
-            where="name_zhtw=$district",
-            vars=locals())
-        if not id_district:
-            id_district = db.insert("district",
-                name_zhtw=district,
-                name_enus=district,
-                alias=district)
-        else:
-            id_district = id_district[0].id
+        district_enus = name.get(district, district)
+        district_id = db.insert("district",
+            name_zhtw=district,
+            name_enus=district_enus,
+            id_city=city_id)
         for street in data[city][district]:
-            id_street = db.select("street",
-                where="name_zhtw=$street",
-                vars=locals())
-            if not id_street:
-                id_street = db.insert("street",
-                    name_zhtw=street,
-                    name_enus=street,
-                    alias=street)
-            else:
-                id_street = id_street[0].id
-            id_region = db.insert("region",
-                id_district=id_district,
-                id_street=id_street,
-                id_city=id_city)
+            street_id = db.insert("street",
+                name_zhtw=street,
+                name_enus=street,
+                id_district=district_id)
 
 print "done."
