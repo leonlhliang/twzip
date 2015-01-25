@@ -10,7 +10,7 @@ Feature: RESTAPI HTTP Service
         Examples:
             | endpoint      | status | field    | value    |
             | /status       | 200    | version  | 0.1.0    |
-            | /v1/zipcode   | 400    | errno    | 001      |
+            | /v1/zipcode   | 400    | code     | 001      |
             | /v1/districts | 200    | language | zh-TW    |
             | /v1/streets   | 200    | language | zh-TW    |
             | /v1/cities    | 200    | language | zh-TW    |
